@@ -32,6 +32,7 @@ function getConfiguration(body: string): SearchProjectConfiguration {
     }
   };
 
+  console.log(config);
   return config;
 }
 
