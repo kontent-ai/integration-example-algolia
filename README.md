@@ -76,13 +76,11 @@ This implementation also **supports tracking changes in [linked content](https:/
 
     The Kontent webhook secret is used to ensure integrity of the webhook payload. It has been created in the previous step.
 
-  > **⚠ WARNING: Since the variables are being evaluated at build-time, you'll have to rebuild your site in order to propagate any change you make to any of your variables.**
-
     After your function has been redeployed (or your environment variables has been propagated), the functions are ready to be called. 
     
     You can observe the real-time **Function log** on the same screen you'd find your function's endpoint (_Functions_ -> _your function_). 
 
-5. ### Run the initialization 
+4. ### Run the index initialization 
     The initialization of your Algolia index with your content is done through the **algolia-init-function**. Simply make a POST request towards the function's endpoint URL with the following payload:
 
     ```
