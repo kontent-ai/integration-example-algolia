@@ -51,8 +51,6 @@ This implementation also **supports tracking changes in [linked content](https:/
 2. ### Create a new Webhook in Kentico Kontent
     The next step is [creating a new webhook in Kentico Kontent](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks#a-create-a-webhook). 
 
-    Insert the endpoint url for your **algolia-update-webhook** function into the **URL address** field for the webhook and 
-    
     Fill out the following into the webhook's **URL address** field:
 
     {**algolia-update-webhook endpoint URL**}?appId={**algolia application id**}&index={**algolia search index name**}&slug={**codename of content's slug property**}
@@ -80,11 +78,9 @@ This implementation also **supports tracking changes in [linked content](https:/
 
   > **⚠ WARNING: Since the variables are being evaluated at build-time, you'll have to rebuild your site in order to propagate any change you make to any of your variables.**
 
-
-4. ### Redeploy your function
-    As mentioned above, the function has to be _refreshed_ for the variable changes to take place. Navigate under **Deploys** and redeploy the site manually by clicking the **Trigger Deploy** button. 
-
-    After your function has been redeployed (takes no time at all), it should be ready for receiving and filtering webhooks. You can observe the real-time **Function log** on the same screen you'd find your function's endpoint (_Functions_ -> _your function_). 
+    After your function has been redeployed (or your environment variables has been propagated), the functions are ready to be called. 
+    
+    You can observe the real-time **Function log** on the same screen you'd find your function's endpoint (_Functions_ -> _your function_). 
 
 5. ### Run the initialization 
     The initialization of your Algolia index with your content is done through the **algolia-init-function**. Simply make a POST request towards the function's endpoint URL with the following payload:
