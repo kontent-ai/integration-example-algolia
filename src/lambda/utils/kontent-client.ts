@@ -1,4 +1,4 @@
-import { ContentItem, GenericElement, DeliveryClient } from '@kentico/kontent-delivery'
+import { ContentItem, GenericElement, DeliveryClient, ItemMapper } from '@kentico/kontent-delivery'
 import { KontentConfiguration, SearchableItem, ContentBlock } from "./search-model";
 
 class KontentClient {
@@ -132,13 +132,16 @@ class KontentClient {
         slug: item[this.config.slugCodename].value,
         parents: [],
         children: [],
-        composedSlug: "",
         content: []
       };
 
       searchableItem.content = this.getContentFromItem(item, searchableItem.parents, searchableItem.children, allContent,);
-
       searchableStructure.push(searchableItem);
+    }
+
+    // fill out parents for all "slug" items as well
+    for (let i = 0, searchableItem: SearchableItem; (searchableItem = searchableStructure[i]); i++) {
+      searchableItem.parents = searchableStructure.filter(i => i.children.includes(searchableItem.codename)).map(i => i.codename);
     }
 
     return searchableStructure;

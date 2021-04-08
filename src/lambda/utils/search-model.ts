@@ -25,7 +25,6 @@ type SearchableItem = {
   language: string,
   type: string,
   slug: string,
-  composedSlug: string,
   collection: string,
   content: ContentBlock[]
 }
