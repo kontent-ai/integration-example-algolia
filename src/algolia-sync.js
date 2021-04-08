@@ -68,8 +68,12 @@ CustomElement.init((element, _context) => {
         })
     ]);
 
-    search.start();
-    search.on('render', () => {
-        updateSize();
-    });
+    try {
+        search.start();
+        search.on('render', () => {
+            updateSize();
+        });
+    } catch (error) {
+        console.log(error);
+    }
 });
