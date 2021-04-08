@@ -23,8 +23,7 @@ function getConfiguration(body: string): SearchProjectConfiguration {
     kontent: {
       projectId: jsonBody.projectId,
       language: jsonBody.language,
-      slugCodename: jsonBody.slug,
-      //foundCodenames: jsonBody.codenames
+      slugCodename: jsonBody.slug
     },
     algolia: {
       appId: jsonBody.appId,
@@ -47,9 +46,10 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   if (!event.body)
     return { statusCode: 200, body: [] };
 
+
+  console.log(event.body);
   // parse config from the body & env. variables
   const config = getConfiguration(event.body);
-
   var kontentClient = new KontentClient(config.kontent);
 
   // get all content from Kontent
