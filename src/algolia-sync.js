@@ -61,7 +61,7 @@ CustomElement.init((element, _context) => {
             escapeHTML: true,
             templates: {
                 item(hit) {
-                    return `<strong style="min-width:200px;">${hit.name}</strong>
+                    return `<a href="https://app.kontent.ai/${config.projectId}/content-inventory/00000000-0000-0000-0000-000000000000/content/${hit.id}" target="_blank"><strong style="min-width:200px;">${hit.name}</strong></a>
                             <div style="margin-rigth:10px;">${hit._snippetResult.content.map(o => JSON.stringify(o.contents.value)).join(' ').replaceAll('"','')}</div>`;
                 }
             }

@@ -32,7 +32,6 @@ function getConfiguration(body: string): SearchProjectConfiguration {
     }
   };
 
-  console.log(config);
   return config;
 }
 
@@ -47,29 +46,22 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   if (!event.body)
     return { statusCode: 200, body: [] };
 
-
-  console.log(event.body);
-
   // parse config from the body & env. variables
   const config = getConfiguration(event.body);
   var kontentClient = new KontentClient(config.kontent);
 
   // get all content from Kontent
   const content = await kontentClient.getAllContentFromProject();
-  console.log("we have the content: " + content.length);
 
   // all items with a predefined slug property -> SEARCHABLE PAGES (indexed objects)
   const contentWithSlug = content.filter(item => item[config.kontent.slugCodename]);
-  console.log("we have the content with slug:" + contentWithSlug.length);
 
   // creates a searchable structure based on the content's structure
   const searchableStructure = kontentClient.createSearchableStructure(contentWithSlug, content);
-  console.log("we have the searchable structure:" + searchableStructure.length);
 
   // index the created content structure into algolia
   const algoliaClient = new AlgoliaClient(config.algolia);
   const indexedItems = await algoliaClient.indexSearchableStructure(searchableStructure);
-  console.log("we have indexed the content: " + indexedItems.length);
 
   return {
     statusCode: 200,

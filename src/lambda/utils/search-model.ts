@@ -16,18 +16,27 @@ type SearchProjectConfiguration = {
 }
 
 type SearchableItem = {
+  id: string,
   objectID: string,
+  parents: string[],
+  children: string[],
   codename: string,
   name: string,
   language: string,
+  type: string,
   slug: string,
+  composedSlug: string,
+  collection: string,
   content: ContentBlock[]
 }
 
 type ContentBlock = {
+  id: string,
   codename: string,
   name: string,
+  type: string,
   language: string,
+  collection: string,
   parents: string[],
   contents: string
 }
