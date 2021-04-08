@@ -18,6 +18,7 @@
   <a href="#demo">Demo</a> •
   <a href="#prerequisities">Prerequisities</a> •
   <a href="#setup">Setup</a> •
+  <a href="#search-data-structure">Search data structure</a> •
   <a href="#developing">Developing</a> •
   <a href="#contributors">Contributors</a> •
   <a href="#license">License</a> •
@@ -118,6 +119,13 @@ This implementation also **supports tracking changes in [linked content](https:/
 
     The custom element allow's you to (re)initialize your Algolia index with all of your content + offers a way to preview your search results. 
     <a href="#demo">**Check out the demo gif above!**</a>
+
+## Search data structure
+When building your search UI, you'll need to understand how the data is being stored inside of your Algolia search index. You can see an example of a content item with slug (i.e. separate "page"), that is linked to a Homepage page and contains its own content, as well as two linked items. 
+
+![algolia-data](docs/algolia-data.png)
+
+You can explore your own generated index to figure out how to implement your search, as well as the code of this custom element that is already implementing a previw of the search functionality [here](src/algolia-sync.js).
 
 ## Developing
 [Netlify Dev](https://www.netlify.com/products/dev/) is highly recommended for local development. 
