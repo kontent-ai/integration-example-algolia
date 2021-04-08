@@ -52,6 +52,7 @@ class KontentClient {
       return [content.item, ...linkedItemArray];
     }
     catch (error) {
+      console.error(error);
       return [];
     }
   }

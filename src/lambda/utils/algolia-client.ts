@@ -17,7 +17,7 @@ class AlgoliaClient {
       searchableAttributes: ["content.contents", "content.name", "name"],
       attributesForFaceting: ["content.codename"],
       attributesToSnippet: ['content.contents:80']
-    }).wait().then(() => { });
+    }).wait().then(() => { console.log("index ready:" + this.config.index) });
   }
 
   // indexes searchable structure of content into algolia
