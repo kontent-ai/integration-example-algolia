@@ -8,7 +8,7 @@ import KontentClient from './utils/kontent-client';
 import { ContentItem } from '@kentico/kontent-delivery';
 
 // @ts-ignore - netlify env. variable
-const { URL, ALGOLIA_API_KEY, KONTENT_SECRET } = process.env;
+const { ALGOLIA_API_KEY, KONTENT_SECRET } = process.env;
 
 function getConfiguration(webhook: KontentWebhookModel, queryParams: APIGatewayProxyEventQueryStringParameters | null): SearchProjectConfiguration | null {
   if (!queryParams || !queryParams.slug || !queryParams.appId || !queryParams.index) {
