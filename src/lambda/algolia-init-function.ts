@@ -9,7 +9,7 @@
  * in order to model your data correcly inside of the search engine */
 import { APIGatewayEvent, Context } from 'aws-lambda'
 
-import { SearchProjectConfiguration, SearchableItem } from "./utils/search-model"
+import { SearchProjectConfiguration } from "./utils/search-model"
 
 import AlgoliaClient from "./utils/algolia-client";
 import KontentClient from './utils/kontent-client';

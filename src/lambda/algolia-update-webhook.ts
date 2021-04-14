@@ -1,8 +1,8 @@
-import KontentHelper from '@kentico/kontent-webhook-helper';
 import { APIGatewayEvent, APIGatewayProxyEventQueryStringParameters, Context } from 'aws-lambda'
 
+import { IWebhookDeliveryResponse, IWebhookDeliveryItem, SignatureHelper } from "@kentico/kontent-webhook-helper";
+
 import { SearchableItem, SearchProjectConfiguration } from "./utils/search-model"
-import { KontentWebhookModel, KontentWebhookItem } from "./utils/webhook-model";
 import AlgoliaClient from "./utils/algolia-client";
 import KontentClient from './utils/kontent-client';
 import { ContentItem } from '@kentico/kontent-delivery';
@@ -10,7 +10,7 @@ import { ContentItem } from '@kentico/kontent-delivery';
 // @ts-ignore - netlify env. variable
 const { ALGOLIA_API_KEY, KONTENT_SECRET } = process.env;
 
-function getConfiguration(webhook: KontentWebhookModel, queryParams: APIGatewayProxyEventQueryStringParameters | null): SearchProjectConfiguration | null {
+function getConfiguration(webhook: IWebhookDeliveryResponse, queryParams: APIGatewayProxyEventQueryStringParameters | null): SearchProjectConfiguration | null {
   if (!queryParams || !queryParams.slug || !queryParams.appId || !queryParams.index) {
     return null;
   }
@@ -88,11 +88,11 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   }
 
   // Consistency check - make sure your netlify enrionment variable and your webhook secret matches
-  /*if (!event.headers['x-kc-signature'] || !KontentHelper.signatureHelper.isValidSignatureFromString(event.body, KONTENT_SECRET, event.headers['x-kc-signature'])) {
+  /*if (!event.headers['x-kc-signature'] || !SignatureHelper.isValidSignatureFromString(event.body, KONTENT_SECRET, event.headers['x-kc-signature'])) {
     return { statusCode: 401, body: "Unauthorized" };
   }*/
 
-  const webhook: KontentWebhookModel = JSON.parse(event.body);
+  const webhook: IWebhookDeliveryResponse = JSON.parse(event.body);
 
   // create configuration from the webhook body/query params
   const config = getConfiguration(webhook, event.queryStringParameters);
@@ -104,7 +104,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   const itemsToIndex: SearchableItem[] = [];
 
   // go through updated items
-  for (let i = 0, affectedItem: KontentWebhookItem; affectedItem = webhook.data.items[i]; i++) {
+  for (let i = 0, affectedItem: IWebhookDeliveryItem; affectedItem = webhook.data.items[i]; i++) {
     // we are looking for the ultimate "parent"/indexed item that contains the content that has been updated
 
     // found an item in algolia
