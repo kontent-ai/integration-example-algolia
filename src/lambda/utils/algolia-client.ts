@@ -13,13 +13,17 @@ class AlgoliaClient {
     const algoliaClient: SearchClient = AlgoliaSearch(this.config.appId, this.config.apiKey);
     this.index = algoliaClient.initIndex(this.config.index);
     // set search settings to only include processed content fields
-    this.index.setSettings({
+  }
+
+  // setup index
+  async setupIndex() {
+    let result = await this.index.setSettings({
       searchableAttributes: ["content.contents", "content.name", "name"],
       attributesForFaceting: ["content.codename"],
       attributesToSnippet: ['content.contents:80']
-    }).wait().then(() => { console.log("index ready:" + this.config.index) });
+    }).wait();
   }
-
+  
   // indexes searchable structure of content into algolia
   async indexSearchableStructure(structure: SearchableItem[] | any): Promise<string[]> {
     // push searchable objects into algolia

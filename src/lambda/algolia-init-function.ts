@@ -48,7 +48,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   // parse config from the body & env. variables
   const config = getConfiguration(event.body);
-  var kontentClient = new KontentClient(config.kontent);
+  const kontentClient = new KontentClient(config.kontent);
 
   // get all content from Kontent
   const content = await kontentClient.getAllContentFromProject();
@@ -61,6 +61,9 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   // index the created content structure into algolia
   const algoliaClient = new AlgoliaClient(config.algolia);
+  // setup default settings for a new index (faceting, searching, etc.)
+  await algoliaClient.setupIndex();
+
   const indexedItems = await algoliaClient.indexSearchableStructure(searchableStructure);
 
   return {

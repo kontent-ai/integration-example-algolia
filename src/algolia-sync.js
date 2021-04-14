@@ -1,4 +1,4 @@
-var config = null;
+let config = null;
 
 function updateSize() {
     const height = Math.ceil($("html").height() + 100)

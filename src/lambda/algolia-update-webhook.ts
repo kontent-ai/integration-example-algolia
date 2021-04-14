@@ -104,7 +104,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
   const itemsToIndex: SearchableItem[] = [];
 
   // go through updated items
-  for (let i = 0, affectedItem: IWebhookDeliveryItem; affectedItem = webhook.data.items[i]; i++) {
+  for (const affectedItem of webhook.data.items) {
     // we are looking for the ultimate "parent"/indexed item that contains the content that has been updated
 
     // found an item in algolia
@@ -116,12 +116,12 @@ export async function handler(event: APIGatewayEvent, context: Context) {
     }
 
     // we actually found some items in algolia => update or delete?
-    for (let x = 0, foundItem: SearchableItem; (foundItem = foundItems[x]); x++) {
+    for (const foundItem of foundItems) {
       itemsToIndex.push(...await processIndexedContent(foundItem.codename, foundItem.language, config, algoliaClient));
     }
   }
 
-  const uniqueItems = [...new Set(itemsToIndex.map(item => item.codename))].map(codename => { return itemsToIndex.find(item => item.codename === codename) });
+  const uniqueItems = Array.from(new Set(itemsToIndex.map(item => item.codename))).map(codename => { return itemsToIndex.find(item => item.codename === codename) });
   const indexedItems: string[] = await algoliaClient.indexSearchableStructure(uniqueItems);
   console.log(indexedItems);
 

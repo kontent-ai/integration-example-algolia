@@ -14,7 +14,7 @@ class KontentClient {
   _getLinkedContent(codenames: string[], parents: string[], children: string[], allContent: ContentItem[]) {
     const linkedContent: ContentBlock[] = [];
 
-    for (let x = 0, linkedCodename: string; (linkedCodename = codenames[x]); x++) {
+    for (const linkedCodename of codenames) {
       const foundLinkedItem: ContentItem | undefined = allContent.find(i => i.system.codename == linkedCodename);
       // IF THE LINKED ITEM CONTAINS SLUG, IT'S NOT BEING INCLUDED IN THE PARENT'S CONTENT
 
@@ -33,13 +33,9 @@ class KontentClient {
   async getAllContentFromProject(): Promise<ContentItem[]> {
     if (!this.config.language) return [];
     const feed = await this.deliveryClient.itemsFeedAll().languageParameter(this.config.language).toPromise();
-
-    const linkedItemArray = [];
-    for (let prop in feed.linkedItems)
-      linkedItemArray.push(feed.linkedItems[prop]);
-
+    
     // all content items (including modular content) + components put into one array
-    return [...feed.items, ...linkedItemArray];
+    return [...feed.items, ...Object.values(feed.linkedItems)];
   }
 
   async getAllContentForCodename(codename: string): Promise<ContentItem[]> {
@@ -48,12 +44,8 @@ class KontentClient {
       const content = await this.deliveryClient.item(codename)
         .languageParameter(this.config.language).depthParameter(100).toPromise();
 
-      const linkedItemArray = [];
-      for (let prop in content.linkedItems)
-        linkedItemArray.push(content.linkedItems[prop]);
-
       // all content items (including modular content) + components put into one array
-      return [content.item, ...linkedItemArray];
+      return [content.item, ...Object.values(content.linkedItems)];
     }
     catch (error) {
       console.error(error);
@@ -119,7 +111,7 @@ class KontentClient {
     const searchableStructure: SearchableItem[] = [];
 
     // process all items with slug into searchable items
-    for (let x = 0, item: ContentItem; (item = contentWithSlug[x]); x++) {
+    for (const item of contentWithSlug) {
       // searchable item structure
       let searchableItem: SearchableItem = {
         objectID: item.system.codename,
@@ -130,18 +122,11 @@ class KontentClient {
         type: item.system.type,
         collection: item.system.collection,
         slug: item[this.config.slugCodename].value,
-        parents: [],
-        children: [],
         content: []
       };
 
-      searchableItem.content = this.getContentFromItem(item, searchableItem.parents, searchableItem.children, allContent,);
+      searchableItem.content = this.getContentFromItem(item, [], [], allContent,);
       searchableStructure.push(searchableItem);
-    }
-
-    // fill out parents for all "slug" items as well
-    for (let i = 0, searchableItem: SearchableItem; (searchableItem = searchableStructure[i]); i++) {
-      searchableItem.parents = searchableStructure.filter(i => i.children.includes(searchableItem.codename)).map(i => i.codename);
     }
 
     return searchableStructure;

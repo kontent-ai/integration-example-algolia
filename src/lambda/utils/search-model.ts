@@ -18,8 +18,6 @@ type SearchProjectConfiguration = {
 type SearchableItem = {
   id: string,
   objectID: string,
-  parents: string[],
-  children: string[],
   codename: string,
   name: string,
   language: string,
