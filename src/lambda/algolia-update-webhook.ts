@@ -108,7 +108,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
     // we are looking for the ultimate "parent"/indexed item that contains the content that has been updated
 
     // found an item in algolia
-    const foundItems: SearchableItem[] = await algoliaClient.searchIndex(affectedItem.codename);
+    const foundItems: SearchableItem[] = await algoliaClient.searchIndex(affectedItem.codename, affectedItem.language);
 
     // item not found in algolia  => new content to be indexed?
     if (foundItems.length == 0) {

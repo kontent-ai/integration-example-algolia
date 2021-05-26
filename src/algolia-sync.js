@@ -18,7 +18,7 @@ function syncSearch() {
             url: "/.netlify/functions/algolia-init-function",
             data: {
                 "projectId": config.projectId,
-                "language": config.language,
+                "language": config.language.codename,
                 "slug": config.slugCodename,
                 "appId": config.algoliaAppId,
                 "index": config.algoliaIndexName
@@ -34,38 +34,49 @@ function syncSearch() {
             $.notify("Search index synced!", "success");
             const synced = new Date().toISOString();
         });
+    
 }
 
 CustomElement.init((element, _context) => {
     config = element.config || {};
     config.projectId = _context.projectId;
+    config.language = _context.variant;
 
     const searchClient = algoliasearch(config.algoliaAppId, config.algoliaSearchKey);
 
     const search = instantsearch({
         indexName: config.algoliaIndexName,
         searchClient,
+        initialUiState: {
+            indexName: {
+                query: "",
+                page: 0,
+            },
+        }
     });
 
     search.addWidgets([
+        instantsearch.widgets.configure({
+           filters: "language:"+config.language.codename.trim(), 
+        }),
         instantsearch.widgets.searchBox({
             container: '#searchbox',
             autofocus: false,
             searchAsYouType: true,
         }),
-        instantsearch.widgets.stats({
-            container: '#stats',
-        }),
-        instantsearch.widgets.hits({
-            container: '#hits',
-            escapeHTML: true,
-            templates: {
-                item(hit) {
-                    return `<strong style="min-width:200px;"><a href="https://app.kontent.ai/${config.projectId}/content-inventory/00000000-0000-0000-0000-000000000000/content/${hit.id}" target="_blank">${hit.name}</a></strong>
-                            <div style="margin-rigth:10px;">${hit._snippetResult.content.map(o => JSON.stringify(o.contents.value)).join(' ').replaceAll('"','')}</div>`;
+            instantsearch.widgets.stats({
+                container: '#stats',
+            }),
+            instantsearch.widgets.hits({
+                container: '#hits',
+                escapeHTML: true,
+                templates: {
+                    item(hit) {
+                        return `<strong style="min-width:200px;"><a href="https://app.kontent.ai/${config.projectId}/content-inventory/${config.language.id}/content/${hit.id}" target="_blank">${hit.name}</a></strong>
+                            <div style="margin-rigth:10px;">${hit._snippetResult.content.map(o => JSON.stringify(o.contents.value)).join(' ').replaceAll('"', '')}</div>`;
+                    }
                 }
-            }
-        })
+            })
     ]);
 
     try {
@@ -74,6 +85,6 @@ CustomElement.init((element, _context) => {
             updateSize();
         });
     } catch (error) {
-        console.log(error);
+        console.log(JSON.stringify(error));
     }
 });

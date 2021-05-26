@@ -31,9 +31,10 @@ class KontentClient {
 
   // returns all content, including linked items in one flat array of ContentItems
   async getAllContentFromProject(): Promise<ContentItem[]> {
+    console.log(this.config);
     if (!this.config.language) return [];
     const feed = await this.deliveryClient.itemsFeedAll().queryConfig({ waitForLoadingNewContent: true })
-      .languageParameter(this.config.language).toPromise();
+      .languageParameter(this.config.language).equalsFilter("system.language", this.config.language).toPromise();
     
     // all content items (including modular content) + components put into one array
     return [...feed.items, ...Object.values(feed.linkedItems)];
@@ -115,7 +116,7 @@ class KontentClient {
     for (const item of contentWithSlug) {
       // searchable item structure
       let searchableItem: SearchableItem = {
-        objectID: item.system.codename,
+        objectID: `${item.system.codename}_${item.system.language}`, 
         id: item.system.id,
         codename: item.system.codename,
         name: item.system.name,

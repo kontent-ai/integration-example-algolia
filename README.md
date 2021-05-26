@@ -105,7 +105,6 @@ This implementation also **supports tracking changes in [linked content](https:/
     "algoliaAppId": "{Algolia's app id}",
     "algoliaSearchKey": "{Algolia's search-only api key}",
     "algoliaIndexName": "{Algolia's index name}"
-    "language": "{Kontent's language you want to use}",
     "slugCodename": "{Kontent's slug codename}",    
     }
     ```

@@ -19,7 +19,7 @@ class AlgoliaClient {
   async setupIndex() {
     let result = await this.index.setSettings({
       searchableAttributes: ["content.contents", "content.name", "name"],
-      attributesForFaceting: ["content.codename"],
+      attributesForFaceting: ["content.codename", "language"],
       attributesToSnippet: ['content.contents:80']
     }).wait();
   }
@@ -32,10 +32,10 @@ class AlgoliaClient {
   }
 
   // returns the indexed content item(s) that include searched content item
-  async searchIndex(searchedCodename: string): Promise<SearchableItem[]> {
+  async searchIndex(searchedCodename: string, language: string): Promise<SearchableItem[]> {
     try {
       const response = await this.index.search<SearchableItem>("", {
-        facetFilters: [`content.codename: ${searchedCodename}`]
+        facetFilters: [`content.codename: ${searchedCodename}`, `content.language: ${language}`]
       });
       return response.hits;
     }
