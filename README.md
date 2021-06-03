@@ -27,7 +27,7 @@
 
 This repository contains an _example implementation_ of integration between [Algolia](https://www.algolia.com/) search engine and [Kentico Kontent](https://kontent.ai/)  headless CMS. It produces an optional [custom element](https://docs.kontent.ai/tutorials/develop-apps/integrate/content-editing-extensions) for indexing your content in Algolia with a search preview functionality, as well as **two** [Netlify functions](https://docs.netlify.com/functions/overview/) for the **initial setup** and subsequent **processing of content changes** via a [webhook](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks).
 
-This implementation also **supports tracking changes in [linked content](https://docs.kontent.ai/tutorials/write-and-collaborate/structure-your-content/link-related-content-together)**. 
+This implementation also supports **tracking changes in [linked content](https://docs.kontent.ai/tutorials/write-and-collaborate/structure-your-content/link-related-content-together)**, as well as **searching in multiple languages**. 
 
 ## Demo
 ![algolia-custom-element](docs/algolia-element.gif)
@@ -112,6 +112,8 @@ This implementation also **supports tracking changes in [linked content](https:/
 
     The custom element allow's you to (re)initialize your Algolia index with all of your content + offers a way to preview your search results. 
     <a href="#demo">**Check out the demo gif above!**</a>
+
+    If you are working with content in [multiple language variants](https://docs.kontent.ai/tutorials/write-and-collaborate/create-multilingual-content/translate-content-items), adding additional variants to your search index is just as easy as just simply switching to the desired variant and activating the custom element to sync all content of the selected variant. 
 
 ## Search data structure
 When building your search UI, you'll need to understand how the data is being stored inside of your Algolia search index. You can see an example of a content item with slug (i.e. separate "page"), that is linked to a Homepage page and contains its own content, as well as two linked items. 
