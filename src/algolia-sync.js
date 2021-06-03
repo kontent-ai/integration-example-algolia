@@ -73,7 +73,7 @@ CustomElement.init((element, _context) => {
                 templates: {
                     item(hit) {
                         return `<strong style="min-width:200px;"><a href="https://app.kontent.ai/${config.projectId}/content-inventory/${config.language.id}/content/${hit.id}" target="_blank">${hit.name}</a></strong>
-                            <div style="margin-rigth:10px;">${hit._snippetResult.content.map(o => JSON.stringify(o.contents.value)).join(' ').replaceAll('"', '')}</div>`;
+                            <div style="margin-rigth:10px;">${hit._snippetResult.content.map(o => JSON.stringify(o.contents.value)).join(' ').replaceAll('"', '').replaceAll('&nbsp;', ' ').replaceAll('\n', ' ')}</div>`;
                     }
                 }
             })
@@ -83,6 +83,8 @@ CustomElement.init((element, _context) => {
         search.start();
         search.on('render', () => {
             updateSize();
+            $("#searchButton").html(`Create/Update Search Index for ${config.language.codename} language`);
+            console.log(config.language);
         });
     } catch (error) {
         console.log(JSON.stringify(error));

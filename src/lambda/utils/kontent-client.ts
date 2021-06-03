@@ -89,7 +89,7 @@ class KontentClient {
             contents.push(stringValue);
           break;
         case "rich_text": // for rich text -> strip HTML and copy the value
-          stringValue = property.value.replace(/<[^>]*>?/gm, '');
+          stringValue = property.value.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').replace(/\n/g, ' ');
           if (stringValue)
             contents.push(stringValue)
           // for rich text -> process linked content + components
