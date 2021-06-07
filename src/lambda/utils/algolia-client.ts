@@ -40,7 +40,6 @@ class AlgoliaClient {
       return response.hits;
     }
     catch (error) {
-      console.error(error);
       return [];
     }
   }
@@ -52,7 +51,6 @@ class AlgoliaClient {
       return response.objectIDs;
     }
     catch (error) {
-      console.error(error);
       return [];
     }
   }

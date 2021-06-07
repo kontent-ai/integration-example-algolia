@@ -27,7 +27,6 @@ function syncSearch() {
         .catch((error) => {
             $.LoadingOverlay("hide");
             $.notify("Something went wrong, consult console for error details!", "error");
-            console.error(error);
         })
         .then((response) => {
             $.LoadingOverlay("hide");
@@ -84,9 +83,7 @@ CustomElement.init((element, _context) => {
         search.on('render', () => {
             updateSize();
             $("#searchButton").html(`Create/Update Search Index for ${config.language.codename} language`);
-            console.log(config.language);
         });
     } catch (error) {
-        console.log(JSON.stringify(error));
     }
 });
