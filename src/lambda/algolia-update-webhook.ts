@@ -30,8 +30,6 @@ function getConfiguration(webhook: IWebhookDeliveryResponse, queryParams: APIGat
 
 // processes affected content (about which we have been notified by the webhook)
 async function processNotIndexedContent(codename: string, language: string, config: SearchProjectConfiguration) {
-  console.log("processing content that is not indexed: " + codename + " in language: " + language);
-
   const kontentConfig = config.kontent;
   kontentConfig.language = language;
   const kontentClient = new KontentClient(kontentConfig);
@@ -52,8 +50,6 @@ async function processNotIndexedContent(codename: string, language: string, conf
 
 // processes affected content (about which we have been notified by the webhook)
 async function processIndexedContent(codename: string, language: string, config: SearchProjectConfiguration, algoliaClient: AlgoliaClient) {
-  console.log("processing indexed content: " + codename + " in language: " + language);
-
   const kontentConfig = config.kontent;
   kontentConfig.language = language;
   const kontentClient = new KontentClient(kontentConfig);
@@ -64,7 +60,6 @@ async function processIndexedContent(codename: string, language: string, config:
 
   // nothing found in Kontent => item has been removed
   if (!itemFromDelivery) {
-    console.log("item will be removed from index: " + codename);
     await algoliaClient.removeFromIndex([codename]);
     return [];
   }
@@ -123,8 +118,7 @@ export async function handler(event: APIGatewayEvent, context: Context) {
 
   const uniqueItems = Array.from(new Set(itemsToIndex.map(item => item.codename))).map(codename => { return itemsToIndex.find(item => item.codename === codename) });
   const indexedItems: string[] = await algoliaClient.indexSearchableStructure(uniqueItems);
-  console.log(indexedItems);
-
+  
   return {
     statusCode: 200,
     body: `${JSON.stringify(indexedItems)}`,

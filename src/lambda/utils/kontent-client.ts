@@ -31,13 +31,12 @@ class KontentClient {
 
   // returns all content, including linked items in one flat array of ContentItems
   async getAllContentFromProject(): Promise<ContentItem[]> {
-    console.log(this.config);
     if (!this.config.language) return [];
     const feed = await this.deliveryClient.itemsFeedAll().queryConfig({ waitForLoadingNewContent: true })
       .languageParameter(this.config.language).equalsFilter("system.language", this.config.language).toPromise();
     
     // all content items (including modular content) + components put into one array
-    return [...feed.items, ...Object.values(feed.linkedItems)];
+    return [...feed.items, ...Object.keys(feed.linkedItems).map(key => feed.linkedItems[key])];
   }
 
   async getAllContentForCodename(codename: string): Promise<ContentItem[]> {
@@ -47,10 +46,9 @@ class KontentClient {
         .languageParameter(this.config.language).depthParameter(100).toPromise();
 
       // all content items (including modular content) + components put into one array
-      return [content.item, ...Object.values(content.linkedItems)];
+      return [content.item, ...Object.keys(content.linkedItems).map(key => content.linkedItems[key])];
     }
     catch (error) {
-      console.error(error);
       return [];
     }
   }
