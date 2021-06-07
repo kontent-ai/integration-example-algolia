@@ -36,7 +36,7 @@ This implementation also supports **tracking changes in [linked content](https:/
 1. To run this integration, you'll need your Kentico Kontent project + Algolia account. 
 2. The content you want to be returned upon searching has to contain some kind of universal **[slug property](https://itnext.io/whats-a-slug-f7e74b6c23e0)** (of any type). (_Kentico Kontent supports a [SEO-friently way to work with URLs](https://docs.kontent.ai/tutorials/develop-apps/optimize-your-app/seo-friendly-urls) through URL slugs_). 
 
-## Setup
+## Get Started
 
 1. ### Quick Deploy
     Netlify has made this easy. If you click the deploy button below, it will guide you through the process of deploying it to Netlify and leave you with a copy of the repository in your account as well.
