@@ -17,7 +17,7 @@
 <p align="center">
   <a href="#demo">Demo</a> •
   <a href="#prerequisities">Prerequisities</a> •
-  <a href="#setup">Setup</a> •
+  <a href="#get-started">Setup</a> •
   <a href="#search-data-structure">Search data structure</a> •
   <a href="#developing">Developing</a> •
   <a href="#contributors">Contributors</a> •
