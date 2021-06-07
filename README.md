@@ -1,3 +1,4 @@
+[![Core integration][core-shield]](https://kontent.ai/integrations/algolia)
 [![Gallery][gallery-shield]](https://kentico.github.io/kontent-custom-element-samples/gallery/)
 
 ![Last modified][last-commit]
