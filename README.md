@@ -42,7 +42,7 @@ This implementation also supports **tracking changes in [linked content](https:/
 1. ### Quick Deploy
     Netlify has made this easy. If you click the deploy button below, it will guide you through the process of deploying it to Netlify and leave you with a copy of the repository in your account as well.
 
-    [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Kentico/kontent-algolia-sync)
+    [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Kentico/kontent-example-integration-algolia)
 
     After you deploy the project into Netlify, you'll find two functions there:
     ![netlify-functions](docs/netlify-functions.png)
