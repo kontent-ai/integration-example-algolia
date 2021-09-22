@@ -11,7 +11,7 @@
 [![GitHub Discussions][discussion-shield]](https://github.com/Kentico/Home/discussions)
 
 <p align="center">
-<image src="docs/01-kk-logo-main.svg" alt="kontent logo" width="200" />
+<image src="kk-logo.svg" alt="kontent logo" width="200" />
 <image src="docs/algolia-logo.png" alt="algolia logo" width="300">
 </p>
 
@@ -26,7 +26,7 @@
   <a href="#additional-resources">Resources</a>
 </p>
 
-This repository contains an _example implementation_ of integration between [Algolia](https://www.algolia.com/) search engine and [Kentico Kontent](https://kontent.ai/)  headless CMS. It produces an optional [custom element](https://docs.kontent.ai/tutorials/develop-apps/integrate/content-editing-extensions) for indexing your content in Algolia with a search preview functionality, as well as **two** [Netlify functions](https://docs.netlify.com/functions/overview/) for the **initial setup** and subsequent **processing of content changes** via a [webhook](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks).
+This repository contains an _example implementation_ of integration between [Algolia](https://www.algolia.com/) search engine and [Kontent by Kentico](https://kontent.ai/)  headless CMS. It produces an optional [custom element](https://docs.kontent.ai/tutorials/develop-apps/integrate/content-editing-extensions) for indexing your content in Algolia with a search preview functionality, as well as **two** [Netlify functions](https://docs.netlify.com/functions/overview/) for the **initial setup** and subsequent **processing of content changes** via a [webhook](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks).
 
 This implementation also supports **tracking changes in [linked content](https://docs.kontent.ai/tutorials/write-and-collaborate/structure-your-content/link-related-content-together)**, as well as **searching in multiple languages**. 
 
@@ -34,8 +34,8 @@ This implementation also supports **tracking changes in [linked content](https:/
 ![algolia-custom-element](docs/algolia-element.gif)
 
 ## Prerequisities
-1. To run this integration, you'll need your Kentico Kontent project + Algolia account. 
-2. The content you want to be returned upon searching has to contain some kind of universal **[slug property](https://itnext.io/whats-a-slug-f7e74b6c23e0)** (of any type). (_Kentico Kontent supports a [SEO-friently way to work with URLs](https://docs.kontent.ai/tutorials/develop-apps/optimize-your-app/seo-friendly-urls) through URL slugs_). 
+1. To run this integration, you'll need a Kontent project + Algolia account. 
+2. The content you want to be returned upon searching has to contain some kind of universal **[slug property](https://itnext.io/whats-a-slug-f7e74b6c23e0)** (of any type). (_Kontent by Kentico supports a [SEO-friently way to work with URLs](https://docs.kontent.ai/tutorials/develop-apps/optimize-your-app/seo-friendly-urls) through URL slugs_). 
 
 ## Get Started
 
@@ -49,8 +49,8 @@ This implementation also supports **tracking changes in [linked content](https:/
     1. **algolia-init-function** is the function that indexes or refreshes all of your content from Kontent into Algolia. 
     2. **algolia-update-webhook** is the function you want to call via a webhook from Kontent to notify Algolia there's been a change to your content and that it has to be updated and how. 
 
-2. ### Create a new Webhook in Kentico Kontent
-    The next step is [creating a new webhook in Kentico Kontent](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks#a-create-a-webhook). 
+2. ### Create a new Webhook in Kontent
+    The next step is [creating a new webhook in Kontent](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks#a-create-a-webhook). 
 
     Fill out the following into the webhook's **URL address** field:
 
@@ -151,7 +151,7 @@ We have collected notes on how to contribute to this project in [CONTRIBUTING.md
 ## Additional Resources
 
 - [Custom Element Gallery on github](https://kentico.github.io/kontent-custom-element-samples/gallery/)
-- [Kentico Kontent's Integration documentation](https://docs.kontent.ai/tutorials/develop-apps/integrate/integrations-overview)
+- [Kontent's Integration documentation](https://docs.kontent.ai/tutorials/develop-apps/integrate/integrations-overview)
 
 
 [last-commit]: https://img.shields.io/github/last-commit/strizr/kontent-algolia-sync?style=for-the-badge
