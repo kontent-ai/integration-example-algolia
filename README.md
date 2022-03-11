@@ -26,16 +26,16 @@
   <a href="#additional-resources">Resources</a>
 </p>
 
-This repository contains an _example implementation_ of integration between [Algolia](https://www.algolia.com/) search engine and [Kontent by Kentico](https://kontent.ai/)  headless CMS. It produces an optional [custom element](https://docs.kontent.ai/tutorials/develop-apps/integrate/content-editing-extensions) for indexing your content in Algolia with a search preview functionality, as well as **two** [Netlify functions](https://docs.netlify.com/functions/overview/) for the **initial setup** and subsequent **processing of content changes** via a [webhook](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks).
+This repository contains an _example implementation_ of integration between [Algolia](https://www.algolia.com/) search engine and [Kontent by Kentico](https://kontent.ai/)  headless CMS. It produces an optional [custom element](https://kontent.ai/learn/tutorials/develop-apps/integrate/content-editing-extensions) for indexing your content in Algolia with a search preview functionality, as well as **two** [Netlify functions](https://docs.netlify.com/functions/overview/) for the **initial setup** and subsequent **processing of content changes** via a [webhook](https://kontent.ai/learn/tutorials/develop-apps/integrate/webhooks).
 
-This implementation also supports **tracking changes in [linked content](https://docs.kontent.ai/tutorials/write-and-collaborate/structure-your-content/link-related-content-together)**, as well as **searching in multiple languages**. 
+This implementation also supports **tracking changes in [linked content](https://kontent.ai/learn/tutorials/write-and-collaborate/structure-your-content/link-related-content-together)**, as well as **searching in multiple languages**. 
 
 ## Demo
 ![algolia-custom-element](docs/algolia-element.gif)
 
 ## Prerequisities
 1. To run this integration, you'll need a Kontent project + Algolia account. 
-2. The content you want to be returned upon searching has to contain some kind of universal **[slug property](https://itnext.io/whats-a-slug-f7e74b6c23e0)** (of any type). (_Kontent by Kentico supports a [SEO-friently way to work with URLs](https://docs.kontent.ai/tutorials/develop-apps/optimize-your-app/seo-friendly-urls) through URL slugs_). 
+2. The content you want to be returned upon searching has to contain some kind of universal **[slug property](https://itnext.io/whats-a-slug-f7e74b6c23e0)** (of any type). (_Kontent by Kentico supports a [SEO-friendly way to work with URLs](https://kontent.ai/learn/tutorials/develop-apps/optimize-your-app/seo-friendly-urls) through URL slugs_). 
 
 ## Get Started
 
@@ -50,7 +50,7 @@ This implementation also supports **tracking changes in [linked content](https:/
     2. **algolia-update-webhook** is the function you want to call via a webhook from Kontent to notify Algolia there's been a change to your content and that it has to be updated and how. 
 
 2. ### Create a new Webhook in Kontent
-    The next step is [creating a new webhook in Kontent](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks#a-create-a-webhook). 
+    The next step is [creating a new webhook in Kontent](https://kontent.ai/learn/tutorials/develop-apps/integrate/webhooks#a-create-a-webhook). 
 
     Fill out the following into the webhook's **URL address** field:
 
@@ -71,7 +71,7 @@ This implementation also supports **tracking changes in [linked content](https:/
     Variable | Value |
     --- | --- |
     ALGOLIA_API_KEY |  your [Algolia Admin key](https://www.algolia.com/doc/guides/security/api-keys/#admin-api-key) | 
-    KONTENT_SECRET | your [Kontent webhook secret](https://docs.kontent.ai/tutorials/develop-apps/integrate/webhooks#a-validate-received-notifications)
+    KONTENT_SECRET | your [Kontent webhook secret](https://kontent.ai/learn/tutorials/develop-apps/integrate/webhooks#a-validate-received-notifications)
 
     The Algolia admin key is used by the function to create/recreate your search index, as well as for indexing your content.
 
@@ -97,7 +97,7 @@ This implementation also supports **tracking changes in [linked content](https:/
     
     Alternatively, you can use the **custom element** that is a part of this repository as well. 
 
-    Simply add a new [custom element]((https://docs.kontent.ai/tutorials/develop-apps/integrate/content-editing-extensions)) into your content model (it might be a good idea to create some kind of _meta_ content type to store some of the project's settings, so that would be a good place to put this element as well). 
+    Simply add a new [custom element](https://kontent.ai/learn/tutorials/develop-apps/integrate/content-editing-extensions) into your content model (it might be a good idea to create some kind of _meta_ content type to store some of the project's settings, so that would be a good place to put this element as well). 
 
     Use your netlify's URL for the base page as the **Hosted code URL** and a following settings to setup the custom element:
 
@@ -114,7 +114,7 @@ This implementation also supports **tracking changes in [linked content](https:/
     The custom element allow's you to (re)initialize your Algolia index with all of your content + offers a way to preview your search results. 
     <a href="#demo">**Check out the demo gif above!**</a>
 
-    If you are working with content in [multiple language variants](https://docs.kontent.ai/tutorials/write-and-collaborate/create-multilingual-content/translate-content-items), adding additional variants to your search index is just as easy as just simply switching to the desired variant and activating the custom element to sync all content of the selected variant. 
+    If you are working with content in [multiple language variants](https://kontent.ai/learn/tutorials/write-and-collaborate/create-multilingual-content/translate-content-items), adding additional variants to your search index is just as easy as just simply switching to the desired variant and activating the custom element to sync all content of the selected variant. 
 
 ## Search data structure
 When building your search UI, you'll need to understand how the data is being stored inside of your Algolia search index. You can see an example of a content item with slug (i.e. separate "page"), that is linked to a Homepage page and contains its own content, as well as two linked items. 
@@ -151,7 +151,7 @@ We have collected notes on how to contribute to this project in [CONTRIBUTING.md
 ## Additional Resources
 
 - [Custom Element Gallery on github](https://kentico.github.io/kontent-custom-element-samples/gallery/)
-- [Kontent's Integration documentation](https://docs.kontent.ai/tutorials/develop-apps/integrate/integrations-overview)
+- [Kontent's Integration documentation](https://kontent.ai/learn/tutorials/develop-apps/integrate/integrations-overview)
 
 
 [last-commit]: https://img.shields.io/github/last-commit/strizr/kontent-algolia-sync?style=for-the-badge
