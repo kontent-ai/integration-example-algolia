@@ -1,18 +1,7 @@
 {
-  "name": "kontent-algolia-sync",
+  "name": "example-integration-algolia",
   "version": "1.0.0",
-  "author": "Rosta Striz <rosta.striz@kentico.com>",
   "license": "MIT",
-  "description": "",
-  "main": "index.html",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/strizr/kontent-netlify-webhook-processor.git"
-  },
-  "bugs": {
-    "url": "https://github.com/strizr/kontent-netlify-webhook-processor/issues"
-  },
-  "homepage": "https://github.com/strizr/kontent-netlify-webhook-processor#readme",
   "dependencies": {
     "@kentico/kontent-delivery": "^10.3.0",
     "@kentico/kontent-webhook-helper": "^1.1.0",
