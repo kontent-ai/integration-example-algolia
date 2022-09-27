@@ -6,21 +6,11 @@
     "@kentico/kontent-delivery": "^10.3.0",
     "@kentico/kontent-webhook-helper": "^1.1.0",
     "algoliasearch": "^4.8.6",
-    "axios": "^0.21.1",
-    "crypto": "^1.0.1",
-    "rxjs": "^6.6.3",
-    "encoding": "^0.1.13"
+    "axios": "^0.21.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-typescript": "^7.10.4",
-    "@types/aws-lambda": "^8.10.59",
-    "netlify-lambda": "^2.0.1",
-    "prettier": "^2.0.5",
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "build": "netlify-lambda build src/lambda",
-    "ts-check": "tsc --noEmit --lib ES2015"
   }
 }
