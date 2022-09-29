@@ -10,6 +10,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
   "include": [
-    "src/lambda/*.ts"
+    "src/functions/*.ts"
   ]
 }

@@ -3,4 +3,4 @@
 base = "/"
 publish = "/"
 command = "npm run build"
-functions = "functions"
+functions = "src/functions"
