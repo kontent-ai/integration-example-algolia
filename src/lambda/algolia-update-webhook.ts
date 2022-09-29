@@ -1,127 +1,124 @@
-import { APIGatewayEvent, APIGatewayProxyEventQueryStringParameters, Context } from 'aws-lambda'
+import { IWebhookDeliveryResponse, SignatureHelper } from '@kontent-ai/webhook-helper';
+import { DeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
+import { Handler } from '@netlify/functions';
+import createAlgoliaClient, { SearchIndex } from 'algoliasearch';
+import { AlgoliaItem, canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
+import { hasStringProperty, nameOf } from './utils/typeguards';
 
-import { IWebhookDeliveryResponse, IWebhookDeliveryItem, SignatureHelper } from "@kentico/kontent-webhook-helper";
-
-import { SearchableItem, SearchProjectConfiguration } from "./utils/search-model"
-import AlgoliaClient from "./utils/algolia-client";
-import KontentClient from './utils/kontent-client';
-import { ContentItem } from '@kentico/kontent-delivery';
-
-// @ts-ignore - netlify env. variable
 const { ALGOLIA_API_KEY, KONTENT_SECRET } = process.env;
 
-function getConfiguration(webhook: IWebhookDeliveryResponse, queryParams: APIGatewayProxyEventQueryStringParameters | null): SearchProjectConfiguration | null {
-  if (!queryParams || !queryParams.slug || !queryParams.appId || !queryParams.index) {
-    return null;
-  }
-  const config: SearchProjectConfiguration = {
-    kontent: {
-      projectId: webhook.message.project_id,
-      slugCodename: queryParams.slug,
-    },
-    algolia: {
-      appId: queryParams.appId,
-      apiKey: ALGOLIA_API_KEY,
-      index: queryParams.index
-    }
-  };
-  return config;
-}
-
-// processes affected content (about which we have been notified by the webhook)
-async function processNotIndexedContent(codename: string, language: string, config: SearchProjectConfiguration) {
-  const kontentConfig = config.kontent;
-  kontentConfig.language = language;
-  const kontentClient = new KontentClient(kontentConfig);
-
-  // get all content for requested codename
-  const content: ContentItem[] = await kontentClient.getAllContentForCodename(codename);
-  const itemFromDelivery = content.find(item => item.system.codename == codename);
-
-  // the item has slug => new record
-  if (itemFromDelivery && itemFromDelivery[config.kontent.slugCodename]) {
-    // creates a searchable structure based on the content's structure
-    const searchableStructure = kontentClient.createSearchableStructure([itemFromDelivery], content);
-    return searchableStructure;
+export const handler: Handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  return [];
-}
-
-// processes affected content (about which we have been notified by the webhook)
-async function processIndexedContent(codename: string, language: string, config: SearchProjectConfiguration, algoliaClient: AlgoliaClient) {
-  const kontentConfig = config.kontent;
-  kontentConfig.language = language;
-  const kontentClient = new KontentClient(kontentConfig);
-
-  // get all content for requested codename
-  const content: ContentItem[] = await kontentClient.getAllContentForCodename(codename);
-  const itemFromDelivery = content.find(item => item.system.codename == codename);
-
-  // nothing found in Kontent => item has been removed
-  if (!itemFromDelivery) {
-    await algoliaClient.removeFromIndex([codename]);
-    return [];
-  }
-
-  // some content has been found => update existing item by processing it once again
-  const searchableStructure = kontentClient.createSearchableStructure([itemFromDelivery], content);
-  return searchableStructure;
-}
-
-/* FUNCTION HANDLER */
-export async function handler(event: APIGatewayEvent, context: Context) {
-
-  // Only receiving POST requests
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
-  }
-
-  // Empty body
   if (!event.body) {
-    return { statusCode: 400, body: "Missing Data" };
+    return { statusCode: 400, body: 'Missing Data' };
   }
 
-  // Consistency check - make sure your netlify enrionment variable and your webhook secret matches
-  /*if (!event.headers['x-kc-signature'] || !SignatureHelper.isValidSignatureFromString(event.body, KONTENT_SECRET, event.headers['x-kc-signature'])) {
-    return { statusCode: 401, body: "Unauthorized" };
-  }*/
-
-  const webhook: IWebhookDeliveryResponse = JSON.parse(event.body);
-
-  // create configuration from the webhook body/query params
-  const config = getConfiguration(webhook, event.queryStringParameters);
-  if (!config) {
-    return { statusCode: 400, body: "Missing Parameters" };
+  if (!KONTENT_SECRET || !ALGOLIA_API_KEY) {
+    return { statusCode: 500, body: 'Some environment variables are missing, please check the documentation' };
   }
 
-  const algoliaClient = new AlgoliaClient(config.algolia);
-  const itemsToIndex: SearchableItem[] = [];
-
-  // go through updated items
-  for (const affectedItem of webhook.data.items) {
-    // we are looking for the ultimate "parent"/indexed item that contains the content that has been updated
-
-    // found an item in algolia
-    const foundItems: SearchableItem[] = await algoliaClient.searchIndex(affectedItem.codename, affectedItem.language);
-
-    // item not found in algolia  => new content to be indexed?
-    if (foundItems.length == 0) {
-      itemsToIndex.push(...await processNotIndexedContent(affectedItem.codename, affectedItem.language, config));
-    }
-
-    // we actually found some items in algolia => update or delete?
-    for (const foundItem of foundItems) {
-      itemsToIndex.push(...await processIndexedContent(foundItem.codename, foundItem.language, config, algoliaClient));
-    }
+  // Consistency check - make sure your netlify environment variable and your webhook secret matches
+  const signatureHelper = new SignatureHelper();
+  if (!event.headers['x-kc-signature'] || !signatureHelper.isValidSignatureFromString(event.body, KONTENT_SECRET, event.headers['x-kc-signature'])) {
+    return { statusCode: 401, body: 'Unauthorized' };
   }
 
-  const uniqueItems = Array.from(new Set(itemsToIndex.map(item => item.codename))).map(codename => { return itemsToIndex.find(item => item.codename === codename) });
-  const indexedItems: string[] = await algoliaClient.indexSearchableStructure(uniqueItems);
-  
+  const webhookData: IWebhookDeliveryResponse = JSON.parse(event.body);
+
+  const queryParams = event.queryStringParameters;
+  if (!areValidQueryParams(queryParams)) {
+    return { statusCode: 400, body: 'Missing some query parameters, please check the documentation' };
+  }
+
+  const algoliaClient = createAlgoliaClient(queryParams.appId, ALGOLIA_API_KEY);
+  const index = algoliaClient.initIndex(queryParams.index);
+
+  const deliverClient = new DeliveryClient({ projectId: webhookData.message.project_id });
+
+  const actions = (await Promise.all(webhookData.data.items
+    .map(async item => {
+      const existingAlgoliaItems = await findAgoliaItems(index, item.codename, item.language);
+
+      if (!existingAlgoliaItems.length) {
+        const deliverItems = await findDeliverItemWithChildrenByCodename(deliverClient, item.codename, item.language);
+        const deliverItem = deliverItems.get(item.codename);
+
+        return [{
+          objectIdsToRemove: [],
+          recordsToReindex: deliverItem && canConvertToAlgoliaItem(queryParams.slug)(deliverItem)
+            ? [convertToAlgoliaItem(deliverItems, queryParams.slug)(deliverItem)]
+            : [],
+        }];
+      }
+
+      return Promise.all(existingAlgoliaItems
+        .map(async i => {
+          const deliverItems = await findDeliverItemWithChildrenByCodename(deliverClient, i.codename, i.language);
+          const deliverItem = deliverItems.get(i.codename);
+
+          return deliverItem
+            ? {
+              objectIdsToRemove: [] as string[],
+              recordsToReindex: [convertToAlgoliaItem(deliverItems, queryParams.slug)(deliverItem)],
+            }
+            : { objectIdsToRemove: [i.objectID], recordsToReindex: [] };
+        }));
+    }))).flat();
+
+  const recordsToReIndex = [...new Map(actions.flatMap(a => a.recordsToReindex.map(i => [i.codename, i] as const))).values()];
+  const objectIdsToRemove = [...new Set(actions.flatMap(a => a.objectIdsToRemove))];
+
+  const reIndexResponse = recordsToReIndex.length ? await index.saveObjects(recordsToReIndex).wait() : undefined;
+  const deletedResponse = objectIdsToRemove.length ? await index.deleteObjects(objectIdsToRemove).wait() : undefined;
+
   return {
     statusCode: 200,
-    body: `${JSON.stringify(indexedItems)}`,
+    body: JSON.stringify({
+      deletedObjectIds: deletedResponse?.objectIDs ?? [],
+      reIndexedObjectIds: reIndexResponse?.objectIDs ?? [],
+    }),
+    contentType: 'application/json',
   };
-}
+};
 
+const findAgoliaItems = async (index: SearchIndex, itemCodename: string, languageCodename: string) => {
+  try {
+    const response = await index.search<AlgoliaItem>('', { facetFilters: [`content.codename: ${itemCodename}`, `language: ${languageCodename}`] });
+
+    return response.hits;
+  }
+  catch {
+    return [];
+  }
+};
+
+const findDeliverItemWithChildrenByCodename = async (deliverClient: DeliveryClient, codename: string, languageCodename: string): Promise<ReadonlyMap<string, IContentItem>> => {
+  try {
+    const response = await deliverClient
+      .item(codename)
+      .queryConfig({ waitForLoadingNewContent: true })
+      .languageParameter(languageCodename)
+      .depthParameter(100)
+      .toPromise();
+
+    return new Map([response.data.item, ...Object.values(response.data.linkedItems)].map(i => [i.system.codename, i]));
+  }
+  catch {
+    return new Map();
+  }
+};
+
+type ExpectedQueryParams = Readonly<{
+  slug: string;
+  appId: string;
+  index: string;
+}>;
+
+const areValidQueryParams = (v: Record<string, unknown> | null): v is ExpectedQueryParams =>
+  v !== null &&
+  hasStringProperty(nameOf<ExpectedQueryParams>('slug'), v) &&
+  hasStringProperty(nameOf<ExpectedQueryParams>('appId'), v) &&
+  hasStringProperty(nameOf<ExpectedQueryParams>('index'), v);
