@@ -134,10 +134,9 @@ $ npm install
 
 # Build the project
 $ npm run build
-
-# Run locally
-$ netlify dev
 ```
+
+The custom element is created with [Create React App](https://create-react-app.dev/).
 
 ## Contributors
 We have collected notes on how to contribute to this project in [CONTRIBUTING.md](CONTRIBUTING.md).
