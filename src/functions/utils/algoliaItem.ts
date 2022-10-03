@@ -33,7 +33,7 @@ export const convertToAlgoliaItem = (allItems: ReadonlyMap<string, IContentItem>
   type: item.system.type,
   codename: item.system.codename,
   collection: item.system.collection,
-  name: item.system.collection,
+  name: item.system.name,
   language: item.system.language,
   objectID: createObjectId(item.system.codename, item.system.language),
   slug: Object.values(item.elements).find(el => el.type === ElementType.UrlSlug)?.value ?? '',
