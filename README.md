@@ -151,7 +151,7 @@ We have collected notes on how to contribute to this project in [CONTRIBUTING.md
 
 ## Additional Resources
 
-- [Kontent's Integration documentation](https://kontent.ai/learn/tutorials/develop-apps/integrate/integrations-overview)
+- [Kontent.ai Integration documentation](https://kontent.ai/learn/tutorials/develop-apps/integrate/integrations-overview)
 
 
 [last-commit]: https://img.shields.io/github/last-commit/kontent-ai/example-integration-algolia?style=for-the-badge
