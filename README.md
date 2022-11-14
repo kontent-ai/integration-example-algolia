@@ -44,7 +44,7 @@ This implementation also supports **tracking changes in [linked content](https:/
 1. ### Quick Deploy
     Netlify has made this easy. If you click the deploy button below, it will guide you through the process of deploying it to Netlify and leave you with a copy of the repository in your account as well.
 
-    [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/kontent-ai/example-integration-algolia)
+    [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/kontent-ai/integration-example-algolia)
 
     After you deploy the project into Netlify, you'll find two functions there:
     ![netlify-functions](docs/netlify-functions.png)
@@ -141,8 +141,8 @@ The custom element is created with [Create React App](https://create-react-app.d
 ## Contributors
 We have collected notes on how to contribute to this project in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-<a href="https://github.com/kontent-ai/example-integration-algolia/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=kontent-ai/example-integration-algolia" />
+<a href="https://github.com/kontent-ai/integration-example-algolia/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=kontent-ai/integration-example-algolia" />
 </a>
 
 ## License
@@ -154,17 +154,17 @@ We have collected notes on how to contribute to this project in [CONTRIBUTING.md
 - [Kontent.ai Integration documentation](https://kontent.ai/learn/tutorials/develop-apps/integrate/integrations-overview)
 
 
-[last-commit]: https://img.shields.io/github/last-commit/kontent-ai/example-integration-algolia?style=for-the-badge
-[contributors-shield]: https://img.shields.io/github/contributors/kontent-ai/example-integration-algolia.svg?style=for-the-badge
-[contributors-url]: https://github.com/kontent-ai/example-integration-algolia/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/kontent-ai/example-integration-algolia.svg?style=for-the-badge
-[forks-url]: https://github.com/kontent-ai/example-integration-algolia/network/members
-[stars-shield]: https://img.shields.io/github/stars/kontent-ai/example-integration-algolia.svg?style=for-the-badge
-[stars-url]: https://github.com/kontent-ai/example-integration-algolia/stargazers
-[issues-shield]: https://img.shields.io/github/issues/kontent-ai/example-integration-algolia.svg?style=for-the-badge
-[issues-url]: https://github.com/kontent-ai/example-integration-algolia/issues
-[license-shield]: https://img.shields.io/github/license/kontent-ai/example-integration-algolia.svg?style=for-the-badge
-[license-url]: https://github.com/kontent-ai/example-integration-algolia/blob/master/LICENSE
+[last-commit]: https://img.shields.io/github/last-commit/kontent-ai/integration-example-algolia?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/kontent-ai/integration-example-algolia.svg?style=for-the-badge
+[contributors-url]: https://github.com/kontent-ai/integration-example-algolia/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kontent-ai/integration-example-algolia.svg?style=for-the-badge
+[forks-url]: https://github.com/kontent-ai/integration-example-algolia/network/members
+[stars-shield]: https://img.shields.io/github/stars/kontent-ai/integration-example-algolia.svg?style=for-the-badge
+[stars-url]: https://github.com/kontent-ai/integration-example-algolia/stargazers
+[issues-shield]: https://img.shields.io/github/issues/kontent-ai/integration-example-algolia.svg?style=for-the-badge
+[issues-url]: https://github.com/kontent-ai/integration-example-algolia/issues
+[license-shield]: https://img.shields.io/github/license/kontent-ai/integration-example-algolia.svg?style=for-the-badge
+[license-url]: https://github.com/kontent-ai/integration-example-algolia/blob/master/LICENSE
 [core-shield]: https://img.shields.io/static/v1?label=&message=core%20integration&style=for-the-badge&color=FF5733
 [stack-shield]: https://img.shields.io/badge/Stack%20Overflow-ASK%20NOW-FE7A16.svg?logo=stackoverflow&logoColor=white&style=for-the-badge
 [discord-shield]: https://img.shields.io/discord/821885171984891914?label=Discord&logo=Discord&logoColor=white&style=for-the-badge
