@@ -4,6 +4,7 @@ import { Handler } from '@netlify/functions';
 import createAlgoliaClient, { SearchIndex } from 'algoliasearch';
 import { AlgoliaItem, canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import { hasStringProperty, nameOf } from './utils/typeguards';
+import { customUserAgent } from "../shared/algoliaUserAgent";
 
 const { ALGOLIA_API_KEY, KONTENT_SECRET } = process.env;
 
@@ -33,7 +34,7 @@ export const handler: Handler = async (event) => {
     return { statusCode: 400, body: 'Missing some query parameters, please check the documentation' };
   }
 
-  const algoliaClient = createAlgoliaClient(queryParams.appId, ALGOLIA_API_KEY);
+  const algoliaClient = createAlgoliaClient(queryParams.appId, ALGOLIA_API_KEY, { userAgent: customUserAgent });
   const index = algoliaClient.initIndex(queryParams.index);
 
   const deliverClient = new DeliveryClient({ projectId: webhookData.message.project_id });

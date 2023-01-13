@@ -12,6 +12,7 @@ import { DeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
 import { canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import createAlgoliaClient from 'algoliasearch';
 import { hasStringProperty, nameOf } from './utils/typeguards';
+import { customUserAgent } from "../shared/algoliaUserAgent";
 
 const { ALGOLIA_API_KEY } = process.env;
 
@@ -35,7 +36,7 @@ export const handler: Handler = async (event) => {
     .filter(canConvertToAlgoliaItem(body.slug))
     .map(convertToAlgoliaItem(allItemsMap, body.slug));
 
-  const algoliaClient = createAlgoliaClient(body.appId, ALGOLIA_API_KEY);
+  const algoliaClient = createAlgoliaClient(body.appId, ALGOLIA_API_KEY, { userAgent: customUserAgent });
   const index = algoliaClient.initIndex(body.index);
   await index.setSettings({
     searchableAttributes: ['content.contents', 'content.name', 'name'],

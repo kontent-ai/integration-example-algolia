@@ -21,6 +21,7 @@
     "isolatedModules": true
   },
   "include": [
-    "."
+    ".",
+    "../shared"
   ]
 }
