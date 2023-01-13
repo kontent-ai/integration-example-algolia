@@ -9,10 +9,10 @@ type Props = Readonly<{
 
 export const AlgoliaSearch: FC<Props> = props => {
   const { hits, showMore, isLastPage } = useInfiniteHits<AlgoliaItem>()
-  const { isSearchStalled, query, refine, clear } = useSearchBox();
+  const { query, refine, clear } = useSearchBox();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { nbHits } = usePagination();
-  const { refresh } = useInstantSearch();
+  const { refresh, status } = useInstantSearch();
 
   const updateSize = useCallback(() => {
     const newSize = Math.max(document.documentElement.offsetHeight, 200);
@@ -41,7 +41,7 @@ export const AlgoliaSearch: FC<Props> = props => {
           className="text-field__input"
           value={query}
           onChange={e => refine(e.target.value)}
-          disabled={isSearchStalled}
+          disabled={status === 'stalled'}
         />
         <div className="text-field__button-pane" onClick={clearInput}>
           <i className="text-field__button-icon icon-times-circle" />
