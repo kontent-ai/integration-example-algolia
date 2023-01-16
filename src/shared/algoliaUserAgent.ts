@@ -3,4 +3,4 @@ import algoliasearch from "algoliasearch";
 import packageJson from "../../package.json";
 
 export const customUserAgent = createUserAgent(algoliasearch.version)
-  .add({segment: 'Kontent.ai', version: packageJson.version});
+  .add({segment: packageJson.name, version: packageJson.version});

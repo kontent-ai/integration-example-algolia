@@ -1,5 +1,5 @@
 {
-  "name": "example-integration-algolia",
+  "name": "@kontent-ai/integration-example-algolia",
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
