@@ -7,6 +7,7 @@ import { hasStringProperty, nameOf } from './utils/typeguards';
 import { customUserAgent } from "../shared/algoliaUserAgent";
 import { createEnvVars } from './utils/createEnvVars';
 import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
+import { sdkHeaders } from "./utils/sdkHeaders";
 
 const { envVars, missingEnvVars } = createEnvVars(['KONTENT_SECRET', 'ALGOLIA_API_KEY'] as const);
 
@@ -39,7 +40,7 @@ export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => 
   const algoliaClient = createAlgoliaClient(queryParams.appId, envVars.ALGOLIA_API_KEY, { userAgent: customUserAgent });
   const index = algoliaClient.initIndex(queryParams.index);
 
-  const deliverClient = new DeliveryClient({ projectId: webhookData.message.project_id });
+  const deliverClient = new DeliveryClient({ projectId: webhookData.message.project_id, globalHeaders: () => sdkHeaders });
 
   const actions = (await Promise.all(webhookData.data.items
     .map(async item => {

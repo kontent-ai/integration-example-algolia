@@ -15,6 +15,7 @@ import { hasStringProperty, nameOf } from './utils/typeguards';
 import { customUserAgent } from "../shared/algoliaUserAgent";
 import { createEnvVars } from './utils/createEnvVars';
 import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
+import { sdkHeaders } from "./utils/sdkHeaders";
 
 const { envVars, missingEnvVars } = createEnvVars([ 'ALGOLIA_API_KEY' ] as const)
 
@@ -31,7 +32,7 @@ export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => 
     return { statusCode: 500, body: `${missingEnvVars.join(', ')} environment variable(s) are missing, please check the documentation` };
   }
 
-  const deliverClient = new DeliveryClient({ projectId: body.projectId });
+  const deliverClient = new DeliveryClient({ projectId: body.projectId, globalHeaders: () => sdkHeaders });
   const allItems = await getAllContentFromProject(deliverClient, body.language);
   const allItemsMap = new Map(allItems.map(i => [i.system.codename, i]));
   const recordItems = allItems
