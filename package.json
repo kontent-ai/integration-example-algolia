@@ -1,8 +1,9 @@
 {
-  "name": "example-integration-algolia",
+  "name": "@kontent-ai/integration-example-algolia",
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
+    "@algolia/transporter": "^4.14.3",
     "@kontent-ai/delivery-sdk": "^12.2.0",
     "@kontent-ai/webhook-helper": "^2.0.1",
     "@netlify/functions": "^1.2.0",
