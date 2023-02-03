@@ -14,10 +14,11 @@ import createAlgoliaClient from 'algoliasearch';
 import { hasStringProperty, nameOf } from './utils/typeguards';
 import { customUserAgent } from "../shared/algoliaUserAgent";
 import { createEnvVars } from './utils/createEnvVars';
+import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 
 const { envVars, missingEnvVars } = createEnvVars([ 'ALGOLIA_API_KEY' ] as const)
 
-export const handler: Handler = async (event) => {
+export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -50,7 +51,7 @@ export const handler: Handler = async (event) => {
     statusCode: 200,
     body: JSON.stringify(result.objectIDs),
   };
-};
+});
 
 const getAllContentFromProject = async (deliverClient: DeliveryClient, languageCodename: string): Promise<IContentItem[]> => {
   const feed = await deliverClient.items().queryConfig({ waitForLoadingNewContent: true })

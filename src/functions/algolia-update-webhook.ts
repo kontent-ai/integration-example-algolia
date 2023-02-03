@@ -6,10 +6,11 @@ import { AlgoliaItem, canConvertToAlgoliaItem, convertToAlgoliaItem } from './ut
 import { hasStringProperty, nameOf } from './utils/typeguards';
 import { customUserAgent } from "../shared/algoliaUserAgent";
 import { createEnvVars } from './utils/createEnvVars';
+import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 
 const { envVars, missingEnvVars } = createEnvVars(['KONTENT_SECRET', 'ALGOLIA_API_KEY'] as const);
 
-export const handler: Handler = async (event) => {
+export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -84,7 +85,7 @@ export const handler: Handler = async (event) => {
     }),
     contentType: 'application/json',
   };
-};
+});
 
 const findAgoliaItems = async (index: SearchIndex, itemCodename: string, languageCodename: string) => {
   try {
