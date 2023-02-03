@@ -5,8 +5,9 @@ import createAlgoliaClient, { SearchIndex } from 'algoliasearch';
 import { AlgoliaItem, canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import { hasStringProperty, nameOf } from './utils/typeguards';
 import { customUserAgent } from "../shared/algoliaUserAgent";
+import { createEnvVars } from './utils/createEnvVars';
 
-const { ALGOLIA_API_KEY, KONTENT_SECRET } = process.env;
+const { envVars, missingEnvVars } = createEnvVars(['KONTENT_SECRET', 'ALGOLIA_API_KEY'] as const);
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -17,13 +18,13 @@ export const handler: Handler = async (event) => {
     return { statusCode: 400, body: 'Missing Data' };
   }
 
-  if (!KONTENT_SECRET || !ALGOLIA_API_KEY) {
-    return { statusCode: 500, body: 'Some environment variables are missing, please check the documentation' };
+  if (!envVars.KONTENT_SECRET || !envVars.ALGOLIA_API_KEY) {
+    return { statusCode: 500, body: `${missingEnvVars.join(', ')} environment variables are missing, please check the documentation` };
   }
 
   // Consistency check - make sure your netlify environment variable and your webhook secret matches
   const signatureHelper = new SignatureHelper();
-  if (!event.headers['x-kc-signature'] || !signatureHelper.isValidSignatureFromString(event.body, KONTENT_SECRET, event.headers['x-kc-signature'])) {
+  if (!event.headers['x-kc-signature'] || !signatureHelper.isValidSignatureFromString(event.body, envVars.KONTENT_SECRET, event.headers['x-kc-signature'])) {
     return { statusCode: 401, body: 'Unauthorized' };
   }
 
@@ -34,7 +35,7 @@ export const handler: Handler = async (event) => {
     return { statusCode: 400, body: 'Missing some query parameters, please check the documentation' };
   }
 
-  const algoliaClient = createAlgoliaClient(queryParams.appId, ALGOLIA_API_KEY, { userAgent: customUserAgent });
+  const algoliaClient = createAlgoliaClient(queryParams.appId, envVars.ALGOLIA_API_KEY, { userAgent: customUserAgent });
   const index = algoliaClient.initIndex(queryParams.index);
 
   const deliverClient = new DeliveryClient({ projectId: webhookData.message.project_id });

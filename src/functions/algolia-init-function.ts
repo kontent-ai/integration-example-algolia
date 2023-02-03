@@ -13,8 +13,9 @@ import { canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaIt
 import createAlgoliaClient from 'algoliasearch';
 import { hasStringProperty, nameOf } from './utils/typeguards';
 import { customUserAgent } from "../shared/algoliaUserAgent";
+import { createEnvVars } from './utils/createEnvVars';
 
-const { ALGOLIA_API_KEY } = process.env;
+const { envVars, missingEnvVars } = createEnvVars([ 'ALGOLIA_API_KEY' ] as const)
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -25,8 +26,8 @@ export const handler: Handler = async (event) => {
   if (!isValidBody(body)) {
     return { statusCode: 400, body: 'Missing or invalid body, please check the documentation' };
   }
-  if (!ALGOLIA_API_KEY) {
-    return { statusCode: 500, body: 'Some environment variables are missing, please check the documentation' };
+  if (!envVars.ALGOLIA_API_KEY) {
+    return { statusCode: 500, body: `${missingEnvVars.join(', ')} environment variable(s) are missing, please check the documentation` };
   }
 
   const deliverClient = new DeliveryClient({ projectId: body.projectId });
@@ -36,7 +37,7 @@ export const handler: Handler = async (event) => {
     .filter(canConvertToAlgoliaItem(body.slug))
     .map(convertToAlgoliaItem(allItemsMap, body.slug));
 
-  const algoliaClient = createAlgoliaClient(body.appId, ALGOLIA_API_KEY, { userAgent: customUserAgent });
+  const algoliaClient = createAlgoliaClient(body.appId, envVars.ALGOLIA_API_KEY, { userAgent: customUserAgent });
   const index = algoliaClient.initIndex(body.index);
   await index.setSettings({
     searchableAttributes: ['content.contents', 'content.name', 'name'],
