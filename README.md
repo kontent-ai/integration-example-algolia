@@ -88,11 +88,12 @@ This implementation also supports **tracking changes in [linked content](https:/
 
     ```
     {
-      "projectId":"{Kontent.ai project ID}",
-      "language":"{Kontent.ai language codename}",
-      "slug":"{Kontent.ai slug codename}",
-      "appId":"{Algolia app id}",
-      "index":"{Algolia index name}"
+      "projectId": "{Kontent.ai project ID}",
+      "language": "{Kontent.ai language codename}",
+      "slugCodename": "{Kontent.ai slug codename}",
+      "algoliaAppId": "{Algolia app id}",
+      "algoliaSearchKey": "{Algolia API key for search only},
+      "algoliaIndexName": "{Algolia index name}"
     }
     ```
     The function processes all **published** content from your project (based on the given ID) and creates or updates the search index in Algolia (again, based on the given parameter). 
