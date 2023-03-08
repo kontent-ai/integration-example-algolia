@@ -1,4 +1,4 @@
-import { hasStringProperty, nameOf } from "../utils/typeguards";
+import { findMissingStringProps } from "../utils/findMissingStringProps";
 
 export type InitRequestBody = Readonly<{
   projectId: string;
@@ -9,9 +9,16 @@ export type InitRequestBody = Readonly<{
 }>;
 
 export const isValidInitRequestBody = (body: Record<string, unknown>): body is InitRequestBody =>
-  hasStringProperty(nameOf<InitRequestBody>('projectId'), body) &&
-  hasStringProperty(nameOf<InitRequestBody>('language'), body) &&
-  hasStringProperty(nameOf<InitRequestBody>('slugCodename'), body) &&
-  hasStringProperty(nameOf<InitRequestBody>('algoliaAppId'), body) &&
-  hasStringProperty(nameOf<InitRequestBody>('algoliaIndexName'), body);
+  !findMissingStringProps(Object.keys(validRequestBody))(body).length;
+
+const validRequestBody: InitRequestBody = ({
+  projectId: '',
+  language: '',
+  slugCodename: '',
+  algoliaAppId: '',
+  algoliaIndexName: '',
+});
+
+export const findMissingInitRequestBodyProps =
+  findMissingStringProps(Object.keys(validRequestBody));
 

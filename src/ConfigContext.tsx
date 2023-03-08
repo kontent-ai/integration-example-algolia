@@ -1,4 +1,5 @@
 import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
+import { findMissingStringProps } from './shared/utils/findMissingStringProps';
 
 type Props = Readonly<{
   children: ReactElement | ReactElement[] | null;
@@ -10,7 +11,7 @@ export const ConfigProvider: FC<Props> = props => {
   useEffect(() => {
     CustomElement.init((element, context) => {
       if (!isValidConfig(element.config)) {
-        throw new Error(`Invalid element config, please check the documentation.`);
+        throw new Error(`Invalid element config, the following properties are missing or invalid ${findMissingStringProps(Object.keys(emptyConfig))(element.config).join(', ')}`);
       }
 
       setConfig({
@@ -34,39 +35,29 @@ export const ConfigProvider: FC<Props> = props => {
 
 ConfigProvider.displayName = 'ConfigProvider';
 
+export type Config = Readonly<{
+  algoliaAppId: string;
+  algoliaSearchKey: string;
+  algoliaIndexName: string;
+  slugCodename: string;
+  projectId: string;
+  language: string;
+}>;
 
-const Context = React.createContext<Config>({
+const emptyConfig: Config = {
   slugCodename: '',
   algoliaIndexName: '',
   algoliaSearchKey: '',
   algoliaAppId: '',
   language: '',
   projectId: '',
-});
+};
+
+const Context = React.createContext<Config>(emptyConfig);
 
 export const useConfig = () => useContext(Context);
 
-type AlgoliaCustomElementConfig = Readonly<{
-  algoliaAppId: string;
-  algoliaSearchKey: string;
-  algoliaIndexName: string;
-  slugCodename: string;
-}>;
 
-export type Config = AlgoliaCustomElementConfig & Readonly<{
-  projectId: string;
-  language: string;
-}>;
+const isValidConfig = (c: Readonly<Record<string, unknown>> | null): c is Config =>
+  !findMissingStringProps(Object.keys(emptyConfig))(c).length;
 
-const isValidConfig = (c: Readonly<Record<string, unknown>> | null): c is AlgoliaCustomElementConfig =>
-  c !== null &&
-  hasStringProperty(nameOf<AlgoliaCustomElementConfig>('algoliaAppId'), c) &&
-  hasStringProperty(nameOf<AlgoliaCustomElementConfig>('algoliaSearchKey'), c) &&
-  hasStringProperty(nameOf<AlgoliaCustomElementConfig>('algoliaIndexName'), c) &&
-  hasStringProperty(nameOf<AlgoliaCustomElementConfig>('slugCodename'), c);
-
-const nameOf = <Object extends unknown>(prop: keyof Object) => prop;
-
-const hasStringProperty = <PropName extends string, Input extends Record<string, unknown>>(propName: PropName, input: Input): input is Input & { [key in PropName]: string } =>
-  input.hasOwnProperty(propName) &&
-  typeof input[propName] === 'string';

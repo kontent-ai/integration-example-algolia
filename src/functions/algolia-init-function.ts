@@ -11,7 +11,7 @@ import { Handler } from '@netlify/functions';
 import { DeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
 import { canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import createAlgoliaClient from 'algoliasearch';
-import { isValidInitRequestBody } from '../shared/types/initRequestBody';
+import { findMissingInitRequestBodyProps, isValidInitRequestBody } from '../shared/types/initRequestBody';
 import { customUserAgent } from "../shared/algoliaUserAgent";
 import { createEnvVars } from './utils/createEnvVars';
 import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
@@ -26,7 +26,7 @@ export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => 
 
   const body = JSON.parse(event.body || 'null');
   if (!isValidInitRequestBody(body)) {
-    return { statusCode: 400, body: 'Missing or invalid body, please check the documentation' };
+    return { statusCode: 400, body: `Missing or invalid body, the following properties are missing or invalid: ${findMissingInitRequestBodyProps(body).join(', ')}` };
   }
   if (!envVars.ALGOLIA_API_KEY) {
     return { statusCode: 500, body: `${missingEnvVars.join(', ')} environment variable(s) are missing, please check the documentation` };
