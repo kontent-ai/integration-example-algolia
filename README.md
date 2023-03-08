@@ -92,7 +92,6 @@ This implementation also supports **tracking changes in [linked content](https:/
       "language": "{Kontent.ai language codename}",
       "slugCodename": "{Kontent.ai slug codename}",
       "algoliaAppId": "{Algolia app id}",
-      "algoliaSearchKey": "{Algolia API key for search only},
       "algoliaIndexName": "{Algolia index name}"
     }
     ```
@@ -106,10 +105,12 @@ This implementation also supports **tracking changes in [linked content](https:/
 
     ```
     {
-    "algoliaAppId": "{Algolia app id}",
-    "algoliaSearchKey": "{Algolia search-only api key}",
-    "algoliaIndexName": "{Algolia index name}"
-    "slugCodename": "{Kontent.ai slug codename}",    
+      "projectId": "{Kontent.ai project ID}",
+      "language": "{Kontent.ai language codename}",
+      "algoliaAppId": "{Algolia app id}",
+      "algoliaSearchKey": "{Algolia search-only api key}",
+      "algoliaIndexName": "{Algolia index name}",
+      "slugCodename": "{Kontent.ai slug codename}"
     }
     ```
     The [Algolia's search-only api key](https://www.algolia.com/doc/guides/security/api-keys/#search-only-api-key) is used to preview the search functionality from within the custom element.
