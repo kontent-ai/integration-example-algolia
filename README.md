@@ -86,15 +86,8 @@ This implementation also supports **tracking changes in [linked content](https:/
 4. ### Run the index initialization 
     The initialization of your Algolia index with your content is done through the **algolia-init-function**. Simply make a POST request towards the function's endpoint URL with the following payload:
 
-    ```
-    {
-      "projectId": "{Kontent.ai project ID}",
-      "language": "{Kontent.ai language codename}",
-      "slugCodename": "{Kontent.ai slug codename}",
-      "algoliaAppId": "{Algolia app id}",
-      "algoliaIndexName": "{Algolia index name}"
-    }
-    ```
+    https://github.com/kontent-ai/integration-example-algolia/blob/074f1c02c9d13a3e290a9f75aa3d90a697a3ce0c/src/shared/constants/readmeSnippets.ts#L15-L21
+
     The function processes all **published** content from your project (based on the given ID) and creates or updates the search index in Algolia (again, based on the given parameter). 
     
     Alternatively, you can use the **custom element** that is a part of this repository as well. 
@@ -103,16 +96,8 @@ This implementation also supports **tracking changes in [linked content](https:/
 
     Use your netlify's URL for the base page as the **Hosted code URL** and a following settings to setup the custom element:
 
-    ```
-    {
-      "projectId": "{Kontent.ai project ID}",
-      "language": "{Kontent.ai language codename}",
-      "algoliaAppId": "{Algolia app id}",
-      "algoliaSearchKey": "{Algolia search-only api key}",
-      "algoliaIndexName": "{Algolia index name}",
-      "slugCodename": "{Kontent.ai slug codename}"
-    }
-    ```
+    https://github.com/kontent-ai/integration-example-algolia/blob/074f1c02c9d13a3e290a9f75aa3d90a697a3ce0c/src/shared/constants/readmeSnippets.ts#L6-L13
+
     The [Algolia's search-only api key](https://www.algolia.com/doc/guides/security/api-keys/#search-only-api-key) is used to preview the search functionality from within the custom element.
 
     The custom element allows you to (re)initialize your Algolia index with all of your content + offers a way to preview your search results. 
