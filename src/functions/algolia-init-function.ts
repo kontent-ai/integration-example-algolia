@@ -11,13 +11,13 @@ import { Handler } from '@netlify/functions';
 import { DeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
 import { canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import createAlgoliaClient from 'algoliasearch';
-import { hasStringProperty, nameOf } from './utils/typeguards';
+import { findMissingInitRequestBodyProps, isValidInitRequestBody } from '../shared/types/initRequestBody';
 import { customUserAgent } from "../shared/algoliaUserAgent";
 import { createEnvVars } from './utils/createEnvVars';
 import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 import { sdkHeaders } from "./utils/sdkHeaders";
 
-const { envVars, missingEnvVars } = createEnvVars([ 'ALGOLIA_API_KEY' ] as const)
+const { envVars, missingEnvVars } = createEnvVars(['ALGOLIA_API_KEY'] as const)
 
 export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -25,8 +25,8 @@ export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => 
   }
 
   const body = JSON.parse(event.body || 'null');
-  if (!isValidBody(body)) {
-    return { statusCode: 400, body: 'Missing or invalid body, please check the documentation' };
+  if (!isValidInitRequestBody(body)) {
+    return { statusCode: 400, body: `Missing or invalid body, the following properties are missing or invalid: ${findMissingInitRequestBodyProps(body).join(', ')}` };
   }
   if (!envVars.ALGOLIA_API_KEY) {
     return { statusCode: 500, body: `${missingEnvVars.join(', ')} environment variable(s) are missing, please check the documentation` };
@@ -36,11 +36,11 @@ export const handler: Handler = serializeUncaughtErrorsHandler(async (event) => 
   const allItems = await getAllContentFromProject(deliverClient, body.language);
   const allItemsMap = new Map(allItems.map(i => [i.system.codename, i]));
   const recordItems = allItems
-    .filter(canConvertToAlgoliaItem(body.slug))
-    .map(convertToAlgoliaItem(allItemsMap, body.slug));
+    .filter(canConvertToAlgoliaItem(body.slugCodename))
+    .map(convertToAlgoliaItem(allItemsMap, body.slugCodename));
 
-  const algoliaClient = createAlgoliaClient(body.appId, envVars.ALGOLIA_API_KEY, { userAgent: customUserAgent });
-  const index = algoliaClient.initIndex(body.index);
+  const algoliaClient = createAlgoliaClient(body.algoliaAppId, envVars.ALGOLIA_API_KEY, { userAgent: customUserAgent });
+  const index = algoliaClient.initIndex(body.algoliaIndexName);
   await index.setSettings({
     searchableAttributes: ['content.contents', 'content.name', 'name'],
     attributesForFaceting: ['content.codename', 'language'],
@@ -61,17 +61,3 @@ const getAllContentFromProject = async (deliverClient: DeliveryClient, languageC
   return [...feed.data.items, ...Object.values(feed.data.linkedItems)];
 };
 
-type BodyConfig = Readonly<{
-  projectId: string;
-  language: string;
-  slug: string;
-  appId: string;
-  index: string;
-}>;
-
-const isValidBody = (body: Record<string, unknown>): body is BodyConfig =>
-  hasStringProperty(nameOf<BodyConfig>('projectId'), body) &&
-  hasStringProperty(nameOf<BodyConfig>('language'), body) &&
-  hasStringProperty(nameOf<BodyConfig>('slug'), body) &&
-  hasStringProperty(nameOf<BodyConfig>('appId'), body) &&
-  hasStringProperty(nameOf<BodyConfig>('index'), body);

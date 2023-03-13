@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useConfig } from './ConfigContext';
+import { InitRequestBody } from './shared/types/initRequestBody';
 
 const initFunctionUrl = '/.netlify/functions/algolia-init-function';
 
@@ -22,10 +23,10 @@ export const AlgoliaSync: FC<Props> = props => {
     const body = JSON.stringify({
       projectId: config.projectId,
       language: config.language,
-      slug: config.slugCodename,
-      appId: config.algoliaAppId,
-      index: config.algoliaIndexName,
-    });
+      slugCodename: config.slugCodename,
+      algoliaAppId: config.algoliaAppId,
+      algoliaIndexName: config.algoliaIndexName,
+    } satisfies InitRequestBody);
     setSynchronizationStatus(SynchronizationStatus.InProgress);
     fetch(initFunctionUrl, { method: 'POST', body })
       .then(() => {
