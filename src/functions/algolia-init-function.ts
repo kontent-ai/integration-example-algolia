@@ -7,15 +7,16 @@
 /* If your model does not support this assumption, you have to remodel the processing
  * part of the function based on your model (i.e. use taxonomies instead of the slug property)
  * in order to model your data correctly inside of the search engine */
-import { Handler } from '@netlify/functions';
 import { DeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
-import { canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
+import { Handler } from '@netlify/functions';
 import createAlgoliaClient from 'algoliasearch';
-import { findMissingInitRequestBodyProps, isValidInitRequestBody } from '../shared/types/initRequestBody';
+
 import { customUserAgent } from "../shared/algoliaUserAgent";
+import { findMissingInitRequestBodyProps, isValidInitRequestBody } from '../shared/types/initRequestBody';
+import { canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import { createEnvVars } from './utils/createEnvVars';
-import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 import { sdkHeaders } from "./utils/sdkHeaders";
+import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 
 const { envVars, missingEnvVars } = createEnvVars(['ALGOLIA_API_KEY'] as const)
 

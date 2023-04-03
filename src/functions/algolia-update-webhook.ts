@@ -1,13 +1,14 @@
-import { IWebhookDeliveryResponse, SignatureHelper } from '@kontent-ai/webhook-helper';
 import { DeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
+import { IWebhookDeliveryResponse, SignatureHelper } from '@kontent-ai/webhook-helper';
 import { Handler } from '@netlify/functions';
 import createAlgoliaClient, { SearchIndex } from 'algoliasearch';
-import { AlgoliaItem, canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
-import { hasStringProperty, nameOf } from './utils/typeguards';
+
 import { customUserAgent } from "../shared/algoliaUserAgent";
+import { hasStringProperty, nameOf } from '../shared/utils/typeguards';
+import { AlgoliaItem, canConvertToAlgoliaItem, convertToAlgoliaItem } from './utils/algoliaItem';
 import { createEnvVars } from './utils/createEnvVars';
-import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 import { sdkHeaders } from "./utils/sdkHeaders";
+import { serializeUncaughtErrorsHandler } from './utils/serializeUncaughtErrorsHandler';
 
 const { envVars, missingEnvVars } = createEnvVars(['KONTENT_SECRET', 'ALGOLIA_API_KEY'] as const);
 

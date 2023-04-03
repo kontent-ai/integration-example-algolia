@@ -1,10 +1,12 @@
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import { EnsureKontentAsParent } from './EnsureKontentAsParent';
-import { ConfigProvider } from './ConfigContext';
-import { AlgoliaElement } from './AlgoliaElement';
 import { PoweredBy } from 'react-instantsearch-hooks-web';
+
+import { AlgoliaElement } from './AlgoliaElement';
+import { ConfigProvider } from './ConfigContext';
+import { EnsureKontentAsParent } from './EnsureKontentAsParent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,7 +1,8 @@
-import { FC } from 'react';
-import { AlgoliaItem } from './functions/utils/algoliaItem';
-import { Highlight } from 'react-instantsearch-hooks-web';
 import { Hit, HitAttributeHighlightResult } from 'instantsearch.js';
+import { FC } from 'react';
+import { Highlight } from 'react-instantsearch-hooks-web';
+
+import { AlgoliaItem } from './functions/utils/algoliaItem';
 
 type Props = Readonly<{
   hit: Hit<AlgoliaItem>;
@@ -28,11 +29,17 @@ export const HitRow: FC<Props> = props => {
   return (
     <tr className="hit">
       <td className="hit__name-cell">
-        <Highlight hit={props.hit} attribute="name" />
+        <Highlight
+          hit={props.hit}
+          attribute="name"
+        />
       </td>
       <td className="hit__content-cell">
         <div className="hit__content">
-          <Highlight hit={hitWithModifiedContent} attribute="content" />
+          <Highlight
+            hit={hitWithModifiedContent}
+            attribute="content"
+          />
         </div>
       </td>
     </tr>
@@ -42,7 +49,7 @@ export const HitRow: FC<Props> = props => {
 HitRow.displayName = 'HitRow';
 
 const aggregateMatchLevel = (results: HitAttributeHighlightResult[]): HitAttributeHighlightResult['matchLevel'] =>
-  results.reduce((prev, result) => {
+  results.reduce<HitAttributeHighlightResult['matchLevel']>((prev, result) => {
     switch (result.matchLevel) {
       case 'full':
         return 'full';
@@ -51,4 +58,4 @@ const aggregateMatchLevel = (results: HitAttributeHighlightResult[]): HitAttribu
       default:
         return prev;
     }
-  }, 'none' as HitAttributeHighlightResult['matchLevel']);
+  }, 'none');
