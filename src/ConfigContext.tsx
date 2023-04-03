@@ -1,9 +1,16 @@
-import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
+import React, {
+  FC,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
+
 import { findMissingStringProps } from './shared/utils/findMissingStringProps';
 
 type Props = Readonly<{
   children: ReactElement | ReactElement[] | null;
-}>
+}>;
 
 export const ConfigProvider: FC<Props> = props => {
   const [config, setConfig] = useState<Config | null>(null);

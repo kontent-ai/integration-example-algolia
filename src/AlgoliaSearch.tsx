@@ -1,7 +1,8 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 import { useInfiniteHits, useInstantSearch, usePagination, useSearchBox } from 'react-instantsearch-hooks-web';
-import { HitRow } from './HitRow';
+
 import { AlgoliaItem } from './functions/utils/algoliaItem';
+import { HitRow } from './HitRow';
 
 type Props = Readonly<{
   searchIndexKey: string;
@@ -43,7 +44,10 @@ export const AlgoliaSearch: FC<Props> = props => {
           onChange={e => refine(e.target.value)}
           disabled={status === 'stalled'}
         />
-        <div className="text-field__button-pane" onClick={clearInput}>
+        <div
+          className="text-field__button-pane"
+          onClick={clearInput}
+        >
           <i className="text-field__button-icon icon-times-circle" />
         </div>
       </div>
@@ -52,12 +56,20 @@ export const AlgoliaSearch: FC<Props> = props => {
       </b>
       <table className="hits-table">
         <tbody>
-          {hits.map(h => <HitRow key={h.id} hit={h} />)}
+          {hits.map(h => (
+            <HitRow
+              key={h.id}
+              hit={h}
+            />
+          ))}
         </tbody>
       </table>
       {!isLastPage && (
         <div className="show-more-btn-wrapper">
-          <button className="btn btn--primary" onClick={showMore}>
+          <button
+            className="btn btn--primary"
+            onClick={showMore}
+          >
             Show more
           </button>
         </div>
