@@ -30,5 +30,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - uses: dprint/check@v2.2
       - run: npm run build
       - run: npm run lintFunctions
