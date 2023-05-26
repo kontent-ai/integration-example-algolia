@@ -1,15 +1,15 @@
-import './index.css';
+import "./index.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { PoweredBy } from 'react-instantsearch-hooks-web';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { PoweredBy } from "react-instantsearch-hooks-web";
 
-import { AlgoliaElement } from './AlgoliaElement';
-import { ConfigProvider } from './ConfigContext';
-import { EnsureKontentAsParent } from './EnsureKontentAsParent';
+import { AlgoliaElement } from "./AlgoliaElement";
+import { ConfigProvider } from "./ConfigContext";
+import { EnsureKontentAsParent } from "./EnsureKontentAsParent";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 root.render(
   <React.StrictMode>
@@ -19,5 +19,5 @@ root.render(
       </ConfigProvider>
       <PoweredBy />
     </EnsureKontentAsParent>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

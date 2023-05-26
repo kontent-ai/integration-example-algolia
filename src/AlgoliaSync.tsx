@@ -1,15 +1,15 @@
-import { FC, useState } from 'react';
+import { FC, useState } from "react";
 
-import { useConfig } from './ConfigContext';
-import { InitRequestBody } from './shared/types/initRequestBody';
+import { useConfig } from "./ConfigContext";
+import { InitRequestBody } from "./shared/types/initRequestBody";
 
-const initFunctionUrl = '/.netlify/functions/algolia-init-function';
+const initFunctionUrl = "/.netlify/functions/algolia-init-function";
 
 enum SynchronizationStatus {
-  NotStarted = 'NotStarted',
-  InProgress = 'InProgress',
-  Successful = 'Successful',
-  Failed = 'Failed',
+  NotStarted = "NotStarted",
+  InProgress = "InProgress",
+  Successful = "Successful",
+  Failed = "Failed",
 }
 
 type Props = Readonly<{
@@ -21,21 +21,23 @@ export const AlgoliaSync: FC<Props> = props => {
   const [synchronizationStatus, setSynchronizationStatus] = useState(SynchronizationStatus.NotStarted);
 
   const syncSearch = () => {
-    const body = JSON.stringify({
-      projectId: config.projectId,
-      language: config.language,
-      slugCodename: config.slugCodename,
-      algoliaAppId: config.algoliaAppId,
-      algoliaIndexName: config.algoliaIndexName,
-    } satisfies InitRequestBody);
+    const body = JSON.stringify(
+      {
+        projectId: config.projectId,
+        language: config.language,
+        slugCodename: config.slugCodename,
+        algoliaAppId: config.algoliaAppId,
+        algoliaIndexName: config.algoliaIndexName,
+      } satisfies InitRequestBody,
+    );
     setSynchronizationStatus(SynchronizationStatus.InProgress);
-    fetch(initFunctionUrl, { method: 'POST', body })
+    fetch(initFunctionUrl, { method: "POST", body })
       .then(() => {
         setSynchronizationStatus(SynchronizationStatus.Successful);
         props.onSyncDone();
       })
       .catch(e => {
-        console.error('Failed to synchronize content, error: ', e);
+        console.error("Failed to synchronize content, error: ", e);
         setSynchronizationStatus(SynchronizationStatus.Failed);
       });
   };
@@ -54,7 +56,7 @@ export const AlgoliaSync: FC<Props> = props => {
   );
 };
 
-AlgoliaSync.displayName = 'AlgoliaSync';
+AlgoliaSync.displayName = "AlgoliaSync";
 
 const renderStatusMessage = (status: SynchronizationStatus) => {
   switch (status) {

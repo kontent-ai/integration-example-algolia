@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, useState } from "react";
 
-import { AlgoliaSearch } from './AlgoliaSearch';
-import { AlgoliaSearchContext } from './AlgoliaSearchContext';
-import { AlgoliaSync } from './AlgoliaSync';
+import { AlgoliaSearch } from "./AlgoliaSearch";
+import { AlgoliaSearchContext } from "./AlgoliaSearchContext";
+import { AlgoliaSync } from "./AlgoliaSync";
 
 export const AlgoliaElement: FC = () => {
   const [searchIndexKey, setSearchIndexKey] = useState(0);
@@ -17,4 +17,4 @@ export const AlgoliaElement: FC = () => {
   );
 };
 
-AlgoliaElement.displayName = 'AlgoliaElement';
+AlgoliaElement.displayName = "AlgoliaElement";

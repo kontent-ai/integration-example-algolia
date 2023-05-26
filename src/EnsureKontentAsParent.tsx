@@ -2,7 +2,7 @@ import { FC, ReactElement } from "react";
 
 type Props = Readonly<{
   children: ReactElement | ReactElement[] | null;
-}>
+}>;
 
 export const EnsureKontentAsParent: FC<Props> = props => {
   if (window === window.top) {
@@ -24,6 +24,7 @@ export const EnsureKontentAsParent: FC<Props> = props => {
   return <>{props.children}</>;
 };
 
-EnsureKontentAsParent.displayName = 'EnsureKontentAsParent';
+EnsureKontentAsParent.displayName = "EnsureKontentAsParent";
 
-const helpLink = 'https://kontent.ai/learn/tutorials/develop-apps/integrate/content-editing-extensions/#a-add-the-custom-element-to-your-project';
+const helpLink =
+  "https://kontent.ai/learn/tutorials/develop-apps/integrate/content-editing-extensions/#a-add-the-custom-element-to-your-project";

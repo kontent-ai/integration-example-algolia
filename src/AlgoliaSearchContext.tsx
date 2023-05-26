@@ -1,8 +1,8 @@
-import algoliasearch from 'algoliasearch';
-import { FC, ReactElement, useMemo } from 'react';
-import { Configure, InstantSearch } from 'react-instantsearch-hooks-web';
+import algoliasearch from "algoliasearch";
+import { FC, ReactElement, useMemo } from "react";
+import { Configure, InstantSearch } from "react-instantsearch-hooks-web";
 
-import { useConfig } from './ConfigContext';
+import { useConfig } from "./ConfigContext";
 import { customUserAgent } from "./shared/algoliaUserAgent";
 
 type Props = Readonly<{
@@ -11,9 +11,10 @@ type Props = Readonly<{
 
 export const AlgoliaSearchContext: FC<Props> = props => {
   const config = useConfig();
-  const searchClient = useMemo(() =>
-    algoliasearch(config.algoliaAppId, config.algoliaSearchKey, { userAgent: customUserAgent })
-    , [config.algoliaAppId, config.algoliaSearchKey]);
+  const searchClient = useMemo(
+    () => algoliasearch(config.algoliaAppId, config.algoliaSearchKey, { userAgent: customUserAgent }),
+    [config.algoliaAppId, config.algoliaSearchKey],
+  );
 
   return (
     <InstantSearch
@@ -21,7 +22,7 @@ export const AlgoliaSearchContext: FC<Props> = props => {
       searchClient={searchClient}
     >
       <Configure
-        facets={['language']}
+        facets={["language"]}
         facetsRefinements={{ language: [config.language] }}
       />
       {props.children}
@@ -29,4 +30,4 @@ export const AlgoliaSearchContext: FC<Props> = props => {
   );
 };
 
-AlgoliaSearchContext.displayName = 'AlgoliaSearchContext';
+AlgoliaSearchContext.displayName = "AlgoliaSearchContext";

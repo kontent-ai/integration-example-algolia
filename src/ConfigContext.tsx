@@ -1,12 +1,6 @@
-import React, {
-  FC,
-  ReactElement,
-  useContext,
-  useEffect,
-  useState
-} from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useState } from "react";
 
-import { findMissingStringProps } from './shared/utils/findMissingStringProps';
+import { findMissingStringProps } from "./shared/utils/findMissingStringProps";
 
 type Props = Readonly<{
   children: ReactElement | ReactElement[] | null;
@@ -18,7 +12,11 @@ export const ConfigProvider: FC<Props> = props => {
   useEffect(() => {
     CustomElement.init((element, context) => {
       if (!isValidConfig(element.config)) {
-        throw new Error(`Invalid element config, the following properties are missing or invalid ${findMissingStringProps(Object.keys(emptyConfig))(element.config).join(', ')}`);
+        throw new Error(
+          `Invalid element config, the following properties are missing or invalid ${
+            findMissingStringProps(Object.keys(emptyConfig))(element.config).join(", ")
+          }`,
+        );
       }
 
       setConfig({
@@ -40,7 +38,7 @@ export const ConfigProvider: FC<Props> = props => {
   );
 };
 
-ConfigProvider.displayName = 'ConfigProvider';
+ConfigProvider.displayName = "ConfigProvider";
 
 export type Config = Readonly<{
   algoliaAppId: string;
@@ -52,19 +50,17 @@ export type Config = Readonly<{
 }>;
 
 const emptyConfig: Config = {
-  slugCodename: '',
-  algoliaIndexName: '',
-  algoliaSearchKey: '',
-  algoliaAppId: '',
-  language: '',
-  projectId: '',
+  slugCodename: "",
+  algoliaIndexName: "",
+  algoliaSearchKey: "",
+  algoliaAppId: "",
+  language: "",
+  projectId: "",
 };
 
 const Context = React.createContext<Config>(emptyConfig);
 
 export const useConfig = () => useContext(Context);
 
-
 const isValidConfig = (c: Readonly<Record<string, unknown>> | null): c is Config =>
   !findMissingStringProps(Object.keys(emptyConfig))(c).length;
-
