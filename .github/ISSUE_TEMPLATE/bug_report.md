@@ -21,9 +21,9 @@ What is the correct behavior?
 
 ### Test environment
 
- - Platform/OS: [e.g. .NET Core 2.1, iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+- Platform/OS: [e.g. .NET Core 2.1, iOS]
+- Browser [e.g. chrome, safari]
+- Version [e.g. 22]
 
 ### Additional context
 

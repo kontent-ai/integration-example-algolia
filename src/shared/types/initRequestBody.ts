@@ -11,14 +11,12 @@ export type InitRequestBody = Readonly<{
 export const isValidInitRequestBody = (body: Record<string, unknown>): body is InitRequestBody =>
   !findMissingStringProps(Object.keys(validRequestBody))(body).length;
 
-const validRequestBody: InitRequestBody = ({
-  projectId: '',
-  language: '',
-  slugCodename: '',
-  algoliaAppId: '',
-  algoliaIndexName: '',
-});
+const validRequestBody: InitRequestBody = {
+  projectId: "",
+  language: "",
+  slugCodename: "",
+  algoliaAppId: "",
+  algoliaIndexName: "",
+};
 
-export const findMissingInitRequestBodyProps =
-  findMissingStringProps(Object.keys(validRequestBody));
-
+export const findMissingInitRequestBodyProps = findMissingStringProps(Object.keys(validRequestBody));

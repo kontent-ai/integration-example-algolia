@@ -1,15 +1,15 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
-import { useInfiniteHits, useInstantSearch, usePagination, useSearchBox } from 'react-instantsearch-hooks-web';
+import { FC, useCallback, useEffect, useRef } from "react";
+import { useInfiniteHits, useInstantSearch, usePagination, useSearchBox } from "react-instantsearch-hooks-web";
 
-import { AlgoliaItem } from './functions/utils/algoliaItem';
-import { HitRow } from './HitRow';
+import { AlgoliaItem } from "./functions/utils/algoliaItem";
+import { HitRow } from "./HitRow";
 
 type Props = Readonly<{
   searchIndexKey: string;
 }>;
 
 export const AlgoliaSearch: FC<Props> = props => {
-  const { hits, showMore, isLastPage } = useInfiniteHits<AlgoliaItem>()
+  const { hits, showMore, isLastPage } = useInfiniteHits<AlgoliaItem>();
   const { query, refine, clear } = useSearchBox();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { nbHits } = usePagination();
@@ -42,7 +42,7 @@ export const AlgoliaSearch: FC<Props> = props => {
           className="text-field__input"
           value={query}
           onChange={e => refine(e.target.value)}
-          disabled={status === 'stalled'}
+          disabled={status === "stalled"}
         />
         <div
           className="text-field__button-pane"
@@ -78,11 +78,11 @@ export const AlgoliaSearch: FC<Props> = props => {
   );
 };
 
-AlgoliaSearch.displayName = 'AlgoliaSearch';
+AlgoliaSearch.displayName = "AlgoliaSearch";
 
 const createResultsMessage = (hits: ReadonlyArray<unknown>, totalHits: number): string => {
   if (hits.length === totalHits) {
     return `Found ${totalHits} items.`;
   }
-  return `Showing ${hits.length} out of ${totalHits} found items.`
-}
+  return `Showing ${hits.length} out of ${totalHits} found items.`;
+};
