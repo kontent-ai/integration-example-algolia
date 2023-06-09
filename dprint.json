@@ -1,5 +1,5 @@
 {
-  "extends": "https://raw.githubusercontent.com/JiriLojda/kontent-ai-dprint-config/main/dprint.json",
+  "extends": "https://raw.githubusercontent.com/kontent-ai/dprint-config/main/dprint.json",
   "includes": [
     "**/*.{ts,tsx,js,jsx,cjs,mjs,json,md}"
   ],
